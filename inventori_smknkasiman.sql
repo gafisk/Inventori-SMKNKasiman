@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2024 at 02:37 PM
+-- Generation Time: Apr 16, 2024 at 03:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -101,6 +101,9 @@ CREATE TABLE `pengembalian` (
 CREATE TABLE `pj_ruang` (
   `id_pj` int(11) NOT NULL,
   `nama_pj` varchar(100) NOT NULL,
+  `jk_pj` enum('Laki-laki','Perempuan') NOT NULL,
+  `telp_pj` char(18) NOT NULL,
+  `alamat_pj` varchar(255) NOT NULL,
   `username_pj` char(50) NOT NULL,
   `password_pj` char(20) NOT NULL,
   `id_ruangbarang` int(11) NOT NULL
@@ -110,14 +113,14 @@ CREATE TABLE `pj_ruang` (
 -- Dumping data for table `pj_ruang`
 --
 
-INSERT INTO `pj_ruang` (`id_pj`, `nama_pj`, `username_pj`, `password_pj`, `id_ruangbarang`) VALUES
-(1, 'pj 1', 'pj1', 'pj1', 0),
-(2, 'pj 2', 'pj2', 'pj2', 0),
-(3, 'pj 3', 'pj3', 'pj3', 0),
-(4, 'pj 4', 'pj4', 'pj4', 0),
-(5, 'pj 5', 'pj5', 'pj5', 0),
-(6, 'pj 6', 'pj6', 'pj6', 0),
-(7, 'pj 7', 'pj7', 'pj7', 0);
+INSERT INTO `pj_ruang` (`id_pj`, `nama_pj`, `jk_pj`, `telp_pj`, `alamat_pj`, `username_pj`, `password_pj`, `id_ruangbarang`) VALUES
+(1, 'pj 1', 'Laki-laki', '01231', 'Jalan a', 'pj1', 'pj1', 1),
+(2, 'pj 2', 'Laki-laki', '3123123', 'Jalan b', 'pj2', 'pj2', 2),
+(3, 'pj 3', 'Laki-laki', '123123', 'Jalan c', 'pj3', 'pj3', 3),
+(4, 'pj 4', 'Laki-laki', '2222', 'Jalan d', 'pj4', 'pj4', 4),
+(5, 'pj 5', 'Laki-laki', '3332', 'Jalan e', 'pj5', 'pj5', 5),
+(6, 'pj 6', 'Laki-laki', '4343', 'Jalan f', 'pj6', 'pj6', 6),
+(7, 'pj 7', 'Laki-laki', '1231111', 'Jalan g', 'pj7', 'pj7', 7);
 
 -- --------------------------------------------------------
 
@@ -161,6 +164,15 @@ CREATE TABLE `users` (
   `password_user` char(20) NOT NULL,
   `role_user` enum('Guru','Siswa','Kepsek') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id_user`, `nama_user`, `ni_user`, `jk_user`, `telp_user`, `alamat_user`, `username_user`, `password_user`, `role_user`) VALUES
+(1, 'Galih User', '190411100177', 'Laki - laki', '081939301705', 'Jalan Bandeng NO 5 RT/RW 006/001 Kolor Kec. Kota Sumenep, Sumenep', '190411100177', '190411100177', 'Siswa'),
+(2, 'Galih Guru', '112233', 'Laki - laki', '081939301923', 'Jalan Mana Saja Yang Penting OKE', '112233', '112233', 'Guru'),
+(3, 'Galih Kepsek', '123', 'Perempuan', '123123123', 'Jalan Yogyakarta Sumenep OKE', '123', '123', 'Kepsek');
 
 --
 -- Indexes for dumped tables
@@ -264,7 +276,7 @@ ALTER TABLE `ruang_barang`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
