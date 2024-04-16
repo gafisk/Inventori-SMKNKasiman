@@ -19,13 +19,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="data-barang.php" class="nav-link">
                       <i class="fas fa-plus nav-icon"></i>
                       <p>Tambah Barang</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="daftar-barang.php" class="nav-link">
                       <i class="fas fa-box nav-icon"></i>
                       <p>Daftar Barang</p>
                     </a>
@@ -42,13 +42,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="data-peminjaman.php" class="nav-link">
                       <i class="fas fa-plus nav-icon"></i>
                       <p>Peminjaman</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="daftar-pengembalian.php" class="nav-link">
                       <i class="fas fa-file-export nav-icon"></i>
                       <p>Pengembalian</p>
                     </a>
@@ -56,7 +56,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="laporan-barang.php" class="nav-link">
                   <i class="nav-icon fab fa-dropbox"></i>
                   <p>
                     Laporan Barang
@@ -64,7 +64,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="laporan-transaksi.php" class="nav-link">
                   <i class="nav-icon fas fa-file-excel"></i>
                   <p>
                     Laporan Transaksi

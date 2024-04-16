@@ -17,10 +17,10 @@
     ) {
       localStorage.setItem(
         "AdminLTE:Demo:MessageShowed",
-        Date.now() + 30 * 60 * 1000
+        Date.now() + 60 * 60 * 1000
       );
       // eslint-disable-next-line no-alert
-      alert("Selamat Datang di Halaman Admin Perpustakaan");
+      alert("Anda masih stay di halaman ini?");
     }
   }, 1000);
 
