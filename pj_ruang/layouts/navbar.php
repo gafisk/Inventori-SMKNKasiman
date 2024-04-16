@@ -11,109 +11,68 @@
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-user-circle"></i>
+                  <i class="nav-icon fas fa-boxes"></i>
                   <p>
-                    Kelola Pengguna
+                    Manajemen Barang
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="tambah-pengguna.php" class="nav-link">
-                      <i class="far fa-address-card nav-icon"></i>
-                      <p>Tambah Pengguna</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="daftar-pengguna.php" class="nav-link">
-                      <i class="fas fa-users nav-icon"></i>
-                      <p>Daftar Pengguna</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-book"></i>
-                  <p>
-                    Kelola Buku
-                    <i class="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="tambah-buku.php" class="nav-link">
-                      <i class="fas fa-book-medical nav-icon"></i>
-                      <p>Tambah Buku</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="daftar-buku.php" class="nav-link">
-                      <i class="fas fa-book-open nav-icon"></i>
-                      <p>Daftar Buku</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-download"></i>
-                  <p>
-                    Kelola Peminjaman
-                    <i class="fas fa-angle-left right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="tambah-peminjaman.php" class="nav-link">
+                    <a href="#" class="nav-link">
                       <i class="fas fa-plus nav-icon"></i>
-                      <p>Tambah Peminjaman</p>
+                      <p>Tambah Barang</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="daftar-peminjaman.php" class="nav-link">
-                      <i class="fas fa-clipboard-list nav-icon"></i>
-                      <p>Daftar Peminjaman</p>
+                    <a href="#" class="nav-link">
+                      <i class="fas fa-box nav-icon"></i>
+                      <p>Daftar Barang</p>
                     </a>
                   </li>
                 </ul>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-upload"></i>
+                  <i class="nav-icon fas fa-history"></i>
                   <p>
-                    Kelola Pengembalian
+                    Transaksi
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="daftar-pengembalian.php" class="nav-link">
-                      <i class="fas fa-clipboard-check nav-icon"></i>
-                      <p>Daftar Pengembalian</p>
+                    <a href="#" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>Peminjaman</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="fas fa-file-export nav-icon"></i>
+                      <p>Pengembalian</p>
                     </a>
                   </li>
                 </ul>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-cog"></i>
+                  <i class="nav-icon fab fa-dropbox"></i>
                   <p>
-                    Pengaturan
-                    <i class="fas fa-angle-left right"></i>
+                    Laporan Barang
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="denda.php" class="nav-link">
-                      <i class="fas fa-dollar-sign nav-icon"></i>
-                      <p>Denda</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
               <li class="nav-item">
-                <a href="logout_admin.php" class="nav-link" onclick="return confirm('Anda Yakin Akan Logout?')">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-file-excel"></i>
+                  <p>
+                    Laporan Transaksi
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link" onclick="return confirm('Anda Yakin Akan Logout?')">
                   <i class="nav-icon fas fa-power-off"></i>
                   <p>
                     Logout

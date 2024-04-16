@@ -1,5 +1,3 @@
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,7 +61,7 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3><?= $jumlah_buku_p['jumlah'] ?></h3>
+                  <h3>5</h3>
                   <p>Buku Pendidikan</p>
                 </div>
                 <div class="icon">
@@ -78,7 +76,7 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3><?= $jumlah_buku_np['jumlah'] ?></h3>
+                  <h3>7</h3>
 
                   <p>Buku Non Pendidikan</p>
                 </div>
@@ -94,7 +92,7 @@
               <!-- small box -->
               <div class="small-box bg-warning">
                 <div class="inner">
-                  <h3><?= $jumlah_guru['jumlah'] ?></h3>
+                  <h3>8</h3>
 
                   <p>Total Guru</p>
                 </div>
@@ -110,7 +108,7 @@
               <!-- small box -->
               <div class="small-box bg-danger">
                 <div class="inner">
-                  <h3><?= $jumlah_siswa['jumlah'] ?></h3>
+                  <h3>9</h3>
 
                   <p>Total Siswa</p>
                 </div>
@@ -180,19 +178,17 @@
                 <div class="card-body">
                   <!-- Conversations are loaded here -->
                   <div class="direct-chat-messages">
-                    <?php foreach ($data_log as $log_data) : ?>
                     <div class="direct-chat-msg">
                       <div class="direct-chat-infos clearfix">
-                        <span class="direct-chat-name float-left"><?= $log_data['nama_admin'] ?></span>
-                        <span class="direct-chat-timestamp float-right"><?= $log_data['waktu'] ?></span>
+                        <span class="direct-chat-name float-left"> Galih PJ</span>
+                        <span class="direct-chat-timestamp float-right">19 april</span>
                       </div>
                       <!-- /.direct-chat-img -->
                       <div class="direct-chat-text">
-                        <?= $log_data['keterangan'] ?>
+                        halo
                       </div>
                       <!-- /.direct-chat-text -->
                     </div>
-                    <?php endforeach ?>
                   </div>
                   <!-- /.direct-chat-pane -->
                 </div>
