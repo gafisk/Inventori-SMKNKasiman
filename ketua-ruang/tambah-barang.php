@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
   $stok_barang = mysqli_escape_string($conn, $_POST['stok_barang']);
   $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
   if (empty($id_ruangbarang) || empty($nama_barang) || empty($stok_barang) || empty($status_barang)) {
-    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
+    echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
     echo "<script>window.location.href='tambah-barang.php';</script>";
     exit();
   } else {

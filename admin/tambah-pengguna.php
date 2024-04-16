@@ -9,8 +9,7 @@
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
-        width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
     </div>
 
     <!-- Navbar -->
@@ -70,8 +69,7 @@
                   <div class="card-body">
                     <div class="form-group">
                       <label for="nama_user">Nama Pengguna</label>
-                      <input type="text" class="form-control" id="nama_user" name="nama_user"
-                        placeholder="Nama Pengguna...">
+                      <input type="text" class="form-control" id="nama_user" name="nama_user" placeholder="Nama Pengguna...">
                     </div>
                     <div class="form-group">
                       <label for="ni_user">Id Pengguna</label>
@@ -86,8 +84,7 @@
                     </div>
                     <div class="form-group">
                       <label for="telp_user">No Telp Pengguna</label>
-                      <input type="text" name="telp_user" class="form-control" id="telp_user"
-                        placeholder="No Telp Pengguna...">
+                      <input type="text" name="telp_user" class="form-control" id="telp_user" placeholder="No Telp Pengguna...">
                     </div>
                     <div class="form-group">
                       <label for="alamat_user">Alamat Pengguna</label>
@@ -99,13 +96,12 @@
                         <option value="">Pilih Status</option>
                         <option value="Siswa">Siswa</option>
                         <option value="Guru">Guru</option>
-                        <option value="Kepsek">Kepala Sekolah</option>
+                        <option disabled value="Kepsek">Kepala Sekolah</option>
                       </select>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary"
-                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>

@@ -11326,7 +11326,7 @@
        *      } );
        *    } );
        */
-      sEmptyTable: "No data available in table",
+      sEmptyTable: "Tidak Ada Data",
 
       /**
        * This string gives information to the end user about the information

@@ -6,7 +6,25 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
+$data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
+$id_ruangbarang = $data_pj['id_ruangbarang'];
+$data_barang = mysqli_query($conn, "SELECT * FROM barang WHERE id_ruangbarang = '$id_ruangbarang'");
 
+if (isset($_GET['hapus'])) {
+  $id_barang = mysqli_escape_string($conn,  $_GET['hapus']);
+  $query = mysqli_query($conn, "DELETE FROM barang WHERE id_barang = '$id_barang'");
+  if ($query) {
+    $_SESSION['sukses'] = true;
+    $_SESSION['msg'] = 'Berhasil Menghapus Data';
+    header('location:daftar-barang.php');
+    exit();
+  } else {
+    $_SESSION['gagal'] = true;
+    $_SESSION['msg'] = 'Gagal Menghapus Data';
+    header('location:daftar-barang.php');
+    exit();
+  }
+}
 
 ?>
 
@@ -120,15 +138,17 @@ $id_pj = $_SESSION['id_pj'];
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Tablet</td>
-                        <td>5</td>
-                        <td>Pakai</td>
-                        <td>
-                          <a href="edit-barang.php" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                      </tr>
+                      <?php foreach ($data_barang as $barang) : ?>
+                        <tr>
+                          <td><?= $barang['nama_barang'] ?></td>
+                          <td><?= $barang['stok_barang'] ?></td>
+                          <td><?= ($barang['status_barang'] == 'Pakai') ? 'Barang Habis Pakai' : 'Barang Tetap' ?></td>
+                          <td>
+                            <a href="edit-barang.php?edit=<?= $barang['id_barang'] ?>" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="?hapus=<?= $barang['id_barang'] ?>" onclick="return confirm('Anda Yakin Ingin Menghapus Data?')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                       <tr>

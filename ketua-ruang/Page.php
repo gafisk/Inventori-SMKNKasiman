@@ -6,6 +6,9 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
+// $data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
+// $id_ruangbarang = $data_pj['id_ruangbarang'];
+// $data_barang = mysqli_query($conn, "SELECT * FROM barang WHERE id_ruangbarang = '$id_ruangbarang");
 
 
 ?>
@@ -117,11 +120,13 @@ $id_pj = $_SESSION['id_pj'];
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Tablet</td>
-                        <td>5</td>
-                        <td>Pakai</td>
-                      </tr>
+                      <?php foreach ($data_barang as $data) : ?>
+                        <tr>
+                          <td>Tablet</td>
+                          <td>5</td>
+                          <td>Pakai</td>
+                        </tr>
+                      <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                       <tr>

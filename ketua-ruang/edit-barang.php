@@ -6,7 +6,34 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
+$data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
 
+if (isset($_GET['edit'])) {
+  $id_barang = mysqli_escape_string($conn, $_GET['edit']);
+  $data_barang = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM barang WHERE id_barang = '$id_barang'"));
+  if (isset($_POST['submit'])) {
+    $id_ruangbarang = $data_pj['id_ruangbarang'];
+    $nama_barang = mysqli_escape_string($conn, $_POST['nama_barang']);
+    $stok_barang = mysqli_escape_string($conn, $_POST['stok_barang']);
+    $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
+    if (empty($nama_barang) || empty($stok_barang) || empty($status_barang)) {
+      echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
+    } else {
+      $query = mysqli_query($conn, "UPDATE barang SET nama_barang = '$nama_barang', stok_barang = '$stok_barang', status_barang = '$status_barang' WHERE id_barang = '$id_barang'");
+      if ($query) {
+        $_SESSION['sukses'] = true;
+        $_SESSION['msg'] = "Data Berhasil Diperbaharui";
+        header('location:daftar-barang.php');
+        exit();
+      } else {
+        $_SESSION['gagal'] = true;
+        $_SESSION['msg'] = "Data Gagal Diperbaharui";
+        header('location:daftar-barang.php');
+        exit();
+      }
+    }
+  }
+}
 
 ?>
 
@@ -81,21 +108,23 @@ $id_pj = $_SESSION['id_pj'];
                   <div class="card-body">
                     <div class="form-group">
                       <label for="nama_lab">Nama Lab</label>
-                      <input type="text" class="form-control" id="nama_lab" value="LAB TKJ" readonly>
+                      <input type="text" class="form-control" id="nama_lab" value="<?= $data_pj['nama_ruangbarang'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="nama_barang">Nama Barang</label>
-                      <input type="text" name="nama_barang" class="form-control" id="nama_barang" placeholder="Nama Barang...">
+                      <input type="text" name="nama_barang" class="form-control" id="nama_barang" placeholder="Nama Barang..." value="<?= $data_barang['nama_barang'] ?>">
                     </div>
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
-                      <input type="number" name="stok_barang" class="form-control" id="stok_barang" placeholder="Tahun Terbit Buku">
+                      <input type="number" name="stok_barang" class="form-control" id="stok_barang" placeholder="Tahun Terbit Buku" value="<?= $data_barang['stok_barang'] ?>">
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
                       <select class="form-control" name="status_barang">
-                        <option value="Tetap">Barang Tetap</option>
-                        <option value="Pakai">Barang Habis Pakai</option>
+                        <option <?= ($data_barang['status_barang'] == 'Tetap') ? 'selected' : '' ?> value="Tetap">Barang
+                          Tetap</option>
+                        <option <?= ($data_barang['status_barang'] == 'Pakai') ? 'selected' : '' ?> value="Tetap">Barang
+                          Habis Pakai</option>
                       </select>
                     </div>
                     <!-- /.card-body -->
