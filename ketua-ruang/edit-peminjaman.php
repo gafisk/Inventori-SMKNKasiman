@@ -1,3 +1,15 @@
+<?php
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
+}
+$id_pj = $_SESSION['id_pj'];
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,8 +21,7 @@
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
-        width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
     </div>
 
     <!-- Navbar -->
@@ -102,8 +113,7 @@
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary"
-                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>
@@ -126,44 +136,44 @@
 
 </html>
 <script>
-var nBulan = 2;
+  var nBulan = 2;
 
-function formatDate(date) {
-  var dd = String(date.getDate()).padStart(2, '0');
-  var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
-  var yyyy = date.getFullYear();
-  return yyyy + '-' + mm + '-' + dd;
-}
-
-function setTanggal() {
-  var today = new Date();
-  var tgl_pinjam = formatDate(today); // 'YYYY-MM-DD'
-
-  if (document.getElementById('tgl_pinjam')) {
-    document.getElementById('tgl_pinjam').value = tgl_pinjam;
+  function formatDate(date) {
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var yyyy = date.getFullYear();
+    return yyyy + '-' + mm + '-' + dd;
   }
 
-  var nextDate = new Date(today);
-  nextDate.setMonth(nextDate.getMonth() + nBulan);
-  var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
+  function setTanggal() {
+    var today = new Date();
+    var tgl_pinjam = formatDate(today); // 'YYYY-MM-DD'
 
-  if (document.getElementById('tgl_kembali')) {
-    document.getElementById('tgl_kembali').value = tgl_kembali;
-  }
-}
+    if (document.getElementById('tgl_pinjam')) {
+      document.getElementById('tgl_pinjam').value = tgl_pinjam;
+    }
 
-setTimeout(setTanggal, 100);
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('tgl_pinjam').addEventListener('change', function() {
-    var selectedDate = new Date(this.value);
-    var nextDate = new Date(selectedDate);
+    var nextDate = new Date(today);
     nextDate.setMonth(nextDate.getMonth() + nBulan);
     var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
 
     if (document.getElementById('tgl_kembali')) {
       document.getElementById('tgl_kembali').value = tgl_kembali;
     }
+  }
+
+  setTimeout(setTanggal, 100);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('tgl_pinjam').addEventListener('change', function() {
+      var selectedDate = new Date(this.value);
+      var nextDate = new Date(selectedDate);
+      nextDate.setMonth(nextDate.getMonth() + nBulan);
+      var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
+
+      if (document.getElementById('tgl_kembali')) {
+        document.getElementById('tgl_kembali').value = tgl_kembali;
+      }
+    });
   });
-});
 </script>

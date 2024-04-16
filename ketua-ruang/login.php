@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('config/config.php');
+include('../config/config.php');
 if (isset($_POST['submit'])) {
   $username = mysqli_escape_string($conn, $_POST['username']);
   $password = mysqli_escape_string($conn, $_POST['password']);
@@ -10,25 +10,16 @@ if (isset($_POST['submit'])) {
     header('location:login.php');
     exit();
   } else {
-    $check_users = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username'");
+    $check_users = mysqli_query($conn, "SELECT * FROM pj_ruang WHERE username_pj = '$username'");
     if (mysqli_num_rows($check_users) > 0) {
-      $query = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username' AND password_user = '$password'");
+      $query = mysqli_query($conn, "SELECT * FROM pj_ruang WHERE username_pj = '$username' AND password_pj = '$password'");
       if (mysqli_num_rows($query) > 0) {
         $row = mysqli_fetch_assoc($query);
-        if ($row['role_user'] == 'Guru' || $row['role_user'] == 'Siswa') {
-          $_SESSION['id_user'] = $row['id_user'];
-          $_SESSION['nama_user'] = $row['nama_user'];
-          $_SESSION['ni_user'] = $row['ni_user'];
-          $_SESSION['role_user'] = $row['role_user'];
-          echo '<script>alert("Anda Berhasil Login. Redirecting..."); window.location.href="users/";</script>';
-          exit();
-        } else {
-          $_SESSION['id_user'] = $row['id_user'];
-          $_SESSION['nama_user'] = $row['nama_user'];
-          $_SESSION['ni_user'] = $row['ni_user'];
-          $_SESSION['role_user'] = $row['role_user'];
-          echo '<script>alert("Anda Berhasil Login. Redirecting..."); window.location.href="kepala-sekolah/";</script>';
-        }
+        $_SESSION['id_pj'] = $row['id_pj'];
+        $_SESSION['nama_pj'] = $row['nama_pj'];
+        $_SESSION['id_ruangbarang'] = $row['id_ruangbarang'];
+        echo '<script>alert("Anda Berhasil Login. Redirecting..."); window.location.href="index.php";</script>';
+        exit();
       } else {
         $_SESSION['gagal'] = true;
         $_SESSION['msg'] = "Password Salah";
@@ -52,16 +43,16 @@ if (isset($_POST['submit'])) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login Inventori</title>
+  <title>Login Ketua Ruangan Inventori</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css">
 </head>
 
 <body class="hold-transition login-page">
@@ -69,7 +60,7 @@ if (isset($_POST['submit'])) {
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
-        <a href="login.php" class="h1">INVENTORI<br><b>SMKN</b> KESIMAN </a>
+        <a href="login.php" class="h1">KETUA RUANGAN<br>INVENTORI<br><b>SMKN</b> KESIMAN </a>
       </div>
       <div class="card-body">
         <p class="login-box-msg">Login Untuk Memulai Aplikasi</p>
@@ -101,9 +92,6 @@ if (isset($_POST['submit'])) {
               </div>
             </div>
           </div>
-          <div class="input-group mb-3">
-            <a href="ketua-ruang/login.php" class="text-center">Anda Ketua Ruangan? Login disini</a>
-          </div>
           <!-- /.col -->
           <div class="col-12">
             <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
@@ -122,11 +110,11 @@ if (isset($_POST['submit'])) {
   <!-- /.login-box -->
 
   <!-- jQuery -->
-  <script src="assets/plugins/jquery/jquery.min.js"></script>
+  <script src="../assets/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
-  <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
-  <script src="assets/dist/js/adminlte.min.js"></script>
+  <script src="../assets/dist/js/adminlte.min.js"></script>
 </body>
 
 </html>

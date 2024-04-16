@@ -1,3 +1,41 @@
+<?php
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
+}
+$id_pj = $_SESSION['id_pj'];
+$data_pj =
+  mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
+
+if (isset($_POST['submit'])) {
+  $id_ruangbarang = $data_pj['id_ruangbarang'];
+  $nama_barang = mysqli_escape_string($conn, $_POST['nama_barang']);
+  $stok_barang = mysqli_escape_string($conn, $_POST['stok_barang']);
+  $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
+  if (empty($id_ruangbarang) || empty($nama_barang) || empty($stok_barang) || empty($status_barang)) {
+    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
+    echo "<script>window.location.href='tambah-barang.php';</script>";
+    exit();
+  } else {
+    $query = mysqli_query($conn, "INSERT INTO barang VALUES (NULL, '$id_ruangbarang', '$nama_barang', '$stok_barang', '$status_barang')");
+    if ($query) {
+      $_SESSION['sukses'] = true;
+      $_SESSION['msg'] = 'Berhasil Menambahkan Data';
+      header('location:daftar-barang.php');
+      exit();
+    } else {
+      $_SESSION['gagal'] = true;
+      $_SESSION['msg'] = 'Gagal Menambahkan Data';
+      header('location:daftar-barang.php');
+      exit();
+    }
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,8 +47,7 @@
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
-        width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
     </div>
 
     <!-- Navbar -->
@@ -70,17 +107,15 @@
                   <div class="card-body">
                     <div class="form-group">
                       <label for="nama_lab">Nama Lab</label>
-                      <input type="text" class="form-control" id="nama_lab" value="LAB TKJ" readonly>
+                      <input type="text" class="form-control" id="nama_lab" value="<?= $data_pj['nama_ruangbarang'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="nama_barang">Nama Barang</label>
-                      <input type="text" name="nama_barang" class="form-control" id="nama_barang"
-                        placeholder="Nama Barang...">
+                      <input type="text" name="nama_barang" class="form-control" id="nama_barang" placeholder="Nama Barang...">
                     </div>
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
-                      <input type="number" name="stok_barang" class="form-control" id="stok_barang"
-                        placeholder="Stok Barang....">
+                      <input type="number" name="stok_barang" class="form-control" id="stok_barang" placeholder="Stok Barang....">
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
@@ -91,8 +126,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary"
-                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>

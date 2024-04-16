@@ -1,3 +1,15 @@
+<?php
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
+}
+$id_pj = $_SESSION['id_pj'];
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,8 +21,7 @@
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
-        width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
     </div>
 
     <!-- Navbar -->
@@ -74,13 +85,11 @@
                     </div>
                     <div class="form-group">
                       <label for="nama_barang">Nama Barang</label>
-                      <input type="text" name="nama_barang" class="form-control" id="nama_barang"
-                        placeholder="Nama Barang...">
+                      <input type="text" name="nama_barang" class="form-control" id="nama_barang" placeholder="Nama Barang...">
                     </div>
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
-                      <input type="number" name="stok_barang" class="form-control" id="stok_barang"
-                        placeholder="Tahun Terbit Buku">
+                      <input type="number" name="stok_barang" class="form-control" id="stok_barang" placeholder="Tahun Terbit Buku">
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
@@ -91,8 +100,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary"
-                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>
