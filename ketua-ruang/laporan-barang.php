@@ -6,17 +6,9 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
-
-
-if (isset($_GET['submit'])) {
-  $tgl_awal = $_GET['tanggal_awal'];
-  $tgl_akhir = $_GET['tanggal_akhir'];
-  if (empty($tgl_awal) || empty($tgl_akhir)) {
-    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
-    echo "<script>window.location.href='laporan-barang.php';</script>";
-    exit();
-  }
-}
+$data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
+$id_ruangbarang = $data_pj['id_ruangbarang'];
+$data_barang = mysqli_query($conn, "SELECT * FROM barang WHERE id_ruangbarang = '$id_ruangbarang'");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,34 +102,6 @@ if (isset($_GET['submit'])) {
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">Pilih Waktu</h3>
-                </div>
-                <div class="card-body">
-                  <form action="" method="GET">
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-group">
-                          <label for="tanggal_awal">Dari Tanggal</label>
-                          <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal">
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-group">
-                          <label for="tanggal_akhir">Sampai Tanggal</label>
-                          <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir">
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" name="submit" class="btn btn-primary">Pilih Waktu</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="card">
                 <div class="card-header d-flex align-items-center">
                   <h3 class="card-title">Laporan Data Barang</h3>
                 </div>
@@ -152,11 +116,13 @@ if (isset($_GET['submit'])) {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Tablet</td>
-                        <td>5</td>
-                        <td>Pakai</td>
-                      </tr>
+                      <?php foreach ($data_barang as $barang) : ?>
+                        <tr>
+                          <td><?= $barang['nama_barang'] ?></td>
+                          <td><?= $barang['stok_barang'] ?></td>
+                          <td><?= ($barang['status_barang'] == 'Pakai') ? 'Barang Habis Pakai' : 'Barang Tetap' ?></td>
+                        </tr>
+                      <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                       <tr>
