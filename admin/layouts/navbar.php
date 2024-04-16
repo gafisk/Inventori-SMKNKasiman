@@ -11,46 +11,46 @@
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-boxes"></i>
+                  <i class="nav-icon fas fa-users-cog"></i>
                   <p>
-                    Manajemen Barang
+                    Manajemen Users
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="tambah-barang.php" class="nav-link">
+                    <a href="tambah-pengguna.php" class="nav-link">
                       <i class="fas fa-plus nav-icon"></i>
-                      <p>Tambah Barang</p>
+                      <p>Tambah Pengguna</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="daftar-barang.php" class="nav-link">
-                      <i class="fas fa-box nav-icon"></i>
-                      <p>Daftar Barang</p>
+                    <a href="daftar-pengguna.php" class="nav-link">
+                      <i class="fas fa-users nav-icon"></i>
+                      <p>Daftar Pengguna</p>
                     </a>
                   </li>
                 </ul>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-history"></i>
+                  <i class="nav-icon fas fa-user-tie"></i>
                   <p>
-                    Transaksi
+                    Manajemen Ketua
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="data-peminjaman.php" class="nav-link">
+                    <a href="tambah-ketua.php" class="nav-link">
                       <i class="fas fa-plus nav-icon"></i>
-                      <p>Peminjaman</p>
+                      <p>Tambah Ketua</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="daftar-pengembalian.php" class="nav-link">
-                      <i class="fas fa-file-export nav-icon"></i>
-                      <p>Pengembalian</p>
+                    <a href="daftar-ketua.php" class="nav-link">
+                      <i class="fas fa-users nav-icon"></i>
+                      <p>Daftar Ketua</p>
                     </a>
                   </li>
                 </ul>
@@ -64,10 +64,10 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="laporan-transaksi.php" class="nav-link">
-                  <i class="nav-icon fas fa-file-excel"></i>
+                <a href="log-pengguna.php" class="nav-link">
+                  <i class="nav-icon fas fa-cog"></i>
                   <p>
-                    Laporan Transaksi
+                    Log Pengguna
                   </p>
                 </a>
               </li>

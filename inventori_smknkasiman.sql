@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2024 at 01:46 PM
+-- Generation Time: Apr 16, 2024 at 02:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -102,21 +102,22 @@ CREATE TABLE `pj_ruang` (
   `id_pj` int(11) NOT NULL,
   `nama_pj` varchar(100) NOT NULL,
   `username_pj` char(50) NOT NULL,
-  `password_pj` char(20) NOT NULL
+  `password_pj` char(20) NOT NULL,
+  `id_ruangbarang` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `pj_ruang`
 --
 
-INSERT INTO `pj_ruang` (`id_pj`, `nama_pj`, `username_pj`, `password_pj`) VALUES
-(1, 'pj 1', 'pj1', 'pj1'),
-(2, 'pj 2', 'pj2', 'pj2'),
-(3, 'pj 3', 'pj3', 'pj3'),
-(4, 'pj 4', 'pj4', 'pj4'),
-(5, 'pj 5', 'pj5', 'pj5'),
-(6, 'pj 6', 'pj6', 'pj6'),
-(7, 'pj 7', 'pj7', 'pj7');
+INSERT INTO `pj_ruang` (`id_pj`, `nama_pj`, `username_pj`, `password_pj`, `id_ruangbarang`) VALUES
+(1, 'pj 1', 'pj1', 'pj1', 0),
+(2, 'pj 2', 'pj2', 'pj2', 0),
+(3, 'pj 3', 'pj3', 'pj3', 0),
+(4, 'pj 4', 'pj4', 'pj4', 0),
+(5, 'pj 5', 'pj5', 'pj5', 0),
+(6, 'pj 6', 'pj6', 'pj6', 0),
+(7, 'pj 7', 'pj7', 'pj7', 0);
 
 -- --------------------------------------------------------
 
@@ -126,7 +127,6 @@ INSERT INTO `pj_ruang` (`id_pj`, `nama_pj`, `username_pj`, `password_pj`) VALUES
 
 CREATE TABLE `ruang_barang` (
   `id_ruangbarang` int(11) NOT NULL,
-  `id_pj` int(11) NOT NULL,
   `role_ruang` enum('Lab','Bengkel') NOT NULL,
   `nama_ruangbarang` char(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -135,14 +135,14 @@ CREATE TABLE `ruang_barang` (
 -- Dumping data for table `ruang_barang`
 --
 
-INSERT INTO `ruang_barang` (`id_ruangbarang`, `id_pj`, `role_ruang`, `nama_ruangbarang`) VALUES
-(1, 1, 'Lab', 'Teknik Komputer dan Jaringan'),
-(2, 2, 'Lab', 'Desain Komunikasi Visual'),
-(3, 3, 'Lab', 'Akuntansi dan Keuangan Lembaga'),
-(4, 4, 'Lab', 'CBT'),
-(5, 5, 'Bengkel', 'Teknik Kendaraan Ringan'),
-(6, 6, 'Bengkel', 'Teknik Ototronik'),
-(7, 7, 'Bengkel', 'Teknik Pengelasan');
+INSERT INTO `ruang_barang` (`id_ruangbarang`, `role_ruang`, `nama_ruangbarang`) VALUES
+(1, 'Lab', 'Teknik Komputer dan Jaringan'),
+(2, 'Lab', 'Desain Komunikasi Visual'),
+(3, 'Lab', 'Akuntansi dan Keuangan Lembaga'),
+(4, 'Lab', 'CBT'),
+(5, 'Bengkel', 'Teknik Kendaraan Ringan'),
+(6, 'Bengkel', 'Teknik Ototronik'),
+(7, 'Bengkel', 'Teknik Pengelasan');
 
 -- --------------------------------------------------------
 

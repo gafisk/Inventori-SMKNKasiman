@@ -43,7 +43,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Daftar Barang</h1>
+              <h1 class="m-0">Daftar Pengguna</h1>
             </div>
             <!-- /.col -->
           </div>
@@ -92,44 +92,43 @@
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-header d-flex align-items-center">
-                  <h3 class="card-title">Data Barang</h3>
+                  <h3 class="card-title">Data Pengguna</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="datatables" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>Identitas Peminjam</th>
-                        <th>Nama Peminjam</th>
-                        <th>Nama Barang</th>
-                        <th>Tanggal Pinjam</th>
-                        <th>Tanggal Kembali</th>
-                        <th>Tanggal Serah</th>
-                        <th style="width: 5%">Aksi</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Telepon</th>
+                        <th>Alamat</th>
+                        <th>Ruangan</th>
+                        <th style="width: 11%">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>190411100177</td>
                         <td>Galih Pinjam</td>
-                        <td>Tablet</td>
-                        <td>14-04-2024</td>
-                        <td>20-04-2024</td>
-                        <td>18-04-2024</td>
+                        <td>Laki - Laki</td>
+                        <td>081939301705</td>
+                        <td>Jalan Bandeng No 5 RT/RW 006/001 Kolor Sumenep</td>
+                        <td>Akuntansi dan Keuangan Lembaga</td>
                         <td>
+                          <a href="edit-ketua.php" class="btn btn-sm btn-warning"><i class="fas fa-pen-alt"></i></a>
                           <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                          <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-undo"></i></a>
                         </td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th>Identitas Peminjam</th>
-                        <th>Nama Peminjam</th>
-                        <th>Nama Barang</th>
-                        <th>Tanggal Pinjam</th>
-                        <th>Tanggal Kembali</th>
-                        <th>Tanggal Serah</th>
-                        <th>Aksi</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Telepon</th>
+                        <th>Alamat</th>
+                        <th>Ruangan</th>
+                        <th style="width: 11%">Aksi</th>
                       </tr>
                     </tfoot>
                   </table>

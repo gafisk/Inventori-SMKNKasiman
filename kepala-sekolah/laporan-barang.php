@@ -1,3 +1,15 @@
+<?php
+if (isset($_GET['submit'])) {
+  $tgl_awal = $_GET['tanggal_awal'];
+  $tgl_akhir = $_GET['tanggal_akhir'];
+  $ruangan = $_GET['ruangan'];
+  if (empty($tgl_awal) || empty($tgl_akhir) || empty($ruangan)) {
+    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
+    echo "<script>window.location.href='laporan-barang.php';</script>";
+    exit();
+  }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +55,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Daftar Barang</h1>
+              <h1 class="m-0">Laporan Barang</h1>
             </div>
             <!-- /.col -->
           </div>
@@ -91,45 +103,69 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Pilih Keterangan</h3>
+                </div>
+                <div class="card-body">
+                  <form action="" method="GET">
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Ruangan</label>
+                          <select name="ruangan" class="form-control select2bs4" style="width: 100%;">
+                            <option value="">Pilih Ruangan</option>
+                            <option value="">Galih 1</option>
+                            <option value="">Galih 2</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="tanggal_awal">Dari Tanggal</label>
+                          <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal">
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="tanggal_akhir">Sampai Tanggal</label>
+                          <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir">
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-primary">Pilih Keterangan</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
                 <div class="card-header d-flex align-items-center">
-                  <h3 class="card-title">Data Barang</h3>
+                  <h3 class="card-title">Laporan Data Barang</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="datatables" class="table table-bordered table-striped">
+                  <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>Identitas Peminjam</th>
-                        <th>Nama Peminjam</th>
                         <th>Nama Barang</th>
-                        <th>Tanggal Pinjam</th>
-                        <th>Tanggal Kembali</th>
-                        <th>Tanggal Serah</th>
-                        <th style="width: 5%">Aksi</th>
+                        <th>Stok Barang</th>
+                        <th>Status Barang</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>190411100177</td>
-                        <td>Galih Pinjam</td>
                         <td>Tablet</td>
-                        <td>14-04-2024</td>
-                        <td>20-04-2024</td>
-                        <td>18-04-2024</td>
-                        <td>
-                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                        </td>
+                        <td>5</td>
+                        <td>Pakai</td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th>Identitas Peminjam</th>
-                        <th>Nama Peminjam</th>
                         <th>Nama Barang</th>
-                        <th>Tanggal Pinjam</th>
-                        <th>Tanggal Kembali</th>
-                        <th>Tanggal Serah</th>
-                        <th>Aksi</th>
+                        <th>Stok Barang</th>
+                        <th>Status Barang</th>
                       </tr>
                     </tfoot>
                   </table>

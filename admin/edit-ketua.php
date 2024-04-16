@@ -43,7 +43,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Tambah Barang</h1>
+              <h1 class="m-0">Edit Data Ketua Ruangan</h1>
             </div>
             <!-- /.col -->
           </div>
@@ -61,32 +61,41 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Data Barang</h3>
+                  <h3 class="card-title">Data Ketua Ruangan</h3>
                 </div>
 
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form method="post" action="">
+                <form method="POST" action="">
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="nama_lab">Nama Lab</label>
-                      <input type="text" class="form-control" id="nama_lab" value="LAB TKJ" readonly>
+                      <label for="nama_pj">Nama Ketua Ruangan</label>
+                      <input type="text" class="form-control" id="nama_pj" name="nama_pj"
+                        placeholder="Nama Ketua Ruangan...">
                     </div>
                     <div class="form-group">
-                      <label for="nama_barang">Nama Barang</label>
-                      <input type="text" name="nama_barang" class="form-control" id="nama_barang"
-                        placeholder="Nama Barang...">
+                      <label>Jenis Kelamin Ketua Ruangan</label>
+                      <select class="form-control" name="jk_pj">
+                        <option value="Laki - laki">Laki - Laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                      </select>
                     </div>
                     <div class="form-group">
-                      <label for="stok_barang">Stok Barang</label>
-                      <input type="number" name="stok_barang" class="form-control" id="stok_barang"
-                        placeholder="Stok Barang....">
+                      <label for="telp_pj">No Telp Ketua Ruangan</label>
+                      <input type="text" name="telp_pj" class="form-control" id="telp_pj"
+                        placeholder="No Telp Ketua Ruangan">
                     </div>
                     <div class="form-group">
-                      <label>Status Barang</label>
-                      <select class="form-control" name="status_barang">
-                        <option value="Tetap">Barang Tetap</option>
-                        <option value="Pakai">Barang Habis Pakai</option>
+                      <label for="alamat_pj">Alamat Ketua Ruangan</label>
+                      <textarea class="form-control" name="alamat_pj" id="alamat_pj" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label>Penempatan Ruangan</label>
+                      <select name="id_ruangbarang" class="form-control select2bs4" style="width: 100%;">
+                        <option value="">Pilih Penempatan</option>
+                        <option value="">Ruang 1</option>
+                        <option value="">Ruang 2</option>
+                        <option value="">Ruang 3</option>
                       </select>
                     </div>
                     <!-- /.card-body -->

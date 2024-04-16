@@ -105,7 +105,7 @@
                         <th>Nama Barang</th>
                         <th>Tanggal Pinjam</th>
                         <th>Tanggal Kembali</th>
-                        <th style="width: 8%;">Aksi</th>
+                        <th style="width: 10%;">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -118,7 +118,7 @@
                         <td>
                           <a href="edit-peminjaman.php" class="btn btn-sm btn-warning"><i
                               class="fas fa-pencil-alt"></i></a>
-                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i>
+                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
                         </td>
                       </tr>
                     </tbody>

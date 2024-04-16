@@ -112,7 +112,7 @@
                         <td>Pakai</td>
                         <td>
                           <a href="edit-barang.php" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i>
+                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
                         </td>
                       </tr>
                     </tbody>

@@ -43,7 +43,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Tambah Barang</h1>
+              <h1 class="m-0">Edit Data Pengguna</h1>
             </div>
             <!-- /.col -->
           </div>
@@ -61,32 +61,45 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Data Barang</h3>
+                  <h3 class="card-title">Data Pengguna</h3>
                 </div>
 
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form method="post" action="">
+                <form method="POST" action="">
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="nama_lab">Nama Lab</label>
-                      <input type="text" class="form-control" id="nama_lab" value="LAB TKJ" readonly>
+                      <label for="nama_user">Nama Pengguna</label>
+                      <input type="text" class="form-control" id="nama_user" name="nama_user"
+                        placeholder="Nama Pengguna...">
                     </div>
                     <div class="form-group">
-                      <label for="nama_barang">Nama Barang</label>
-                      <input type="text" name="nama_barang" class="form-control" id="nama_barang"
-                        placeholder="Nama Barang...">
+                      <label for="ni_user">Id Pengguna</label>
+                      <input type="text" name="ni_user" class="form-control" id="ni_user" placeholder="ID Pengguna...">
                     </div>
                     <div class="form-group">
-                      <label for="stok_barang">Stok Barang</label>
-                      <input type="number" name="stok_barang" class="form-control" id="stok_barang"
-                        placeholder="Stok Barang....">
+                      <label>Jenis Kelamin Pengguna</label>
+                      <select class="form-control" name="jk_user">
+                        <option value="Laki - laki">Laki - Laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                      </select>
                     </div>
                     <div class="form-group">
-                      <label>Status Barang</label>
-                      <select class="form-control" name="status_barang">
-                        <option value="Tetap">Barang Tetap</option>
-                        <option value="Pakai">Barang Habis Pakai</option>
+                      <label for="telp_user">No Telp Pengguna</label>
+                      <input type="text" name="telp_user" class="form-control" id="telp_user"
+                        placeholder="No Telp Pengguna...">
+                    </div>
+                    <div class="form-group">
+                      <label for="alamat_user">Alamat Pengguna</label>
+                      <textarea class="form-control" name="alamat_user" id="alamat_user" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label>Status Pengguna</label>
+                      <select name="role_user" class="form-control select2bs4" style="width: 100%;">
+                        <option value="">Pilih Status</option>
+                        <option value="Siswa">Siswa</option>
+                        <option value="Guru">Guru</option>
+                        <option value="Kepsek">Kepala Sekolah</option>
                       </select>
                     </div>
                     <!-- /.card-body -->
