@@ -7,15 +7,22 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
 }
 $id_pj = $_SESSION['id_pj'];
 
-if (isset($_GET['submit'])) {
-  $tgl_awal = $_GET['tanggal_awal'];
-  $tgl_akhir = $_GET['tanggal_akhir'];
+if (isset($_POST['submit'])) {
+  $tgl_awal = $_POST['tanggal_awal'];
+  $tgl_akhir = $_POST['tanggal_akhir'];
   if (empty($tgl_awal) || empty($tgl_akhir)) {
     echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
     echo "<script>window.location.href='laporan-transaksi.php';</script>";
     exit();
+  } else {
+    $data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali AS tgl_serah FROM pengembalian INNER JOIN peminjaman ON pengembalian.id_peminjaman = peminjaman.id_peminjaman INNER JOIN barang ON peminjaman.id_barang = barang.id_barang INNER JOIN users ON peminjaman.id_user = users.id_user WHERE pengembalian.id_pj = '$id_pj' AND peminjaman.tanggal_pinjam BETWEEN '$tgl_awal' AND '$tgl_akhir'");
   }
+} else {
+  $data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali AS tgl_serah FROM pengembalian INNER JOIN peminjaman ON pengembalian.id_peminjaman = peminjaman.id_peminjaman INNER JOIN barang ON peminjaman.id_barang = barang.id_barang INNER JOIN users ON peminjaman.id_user = users.id_user WHERE pengembalian.id_pj = '$id_pj'");
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +35,8 @@ if (isset($_GET['submit'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -75,34 +83,34 @@ if (isset($_GET['submit'])) {
       <section class="content">
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Simpan.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> Data Berhasil di Simpan.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['sukses']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Edit.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> Data Berhasil di Edit.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['edit']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Gagal</strong> Data Gagal di Simpan.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Gagal</strong> Data Gagal di Simpan.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['gagal']);
           endif; ?>
@@ -113,7 +121,7 @@ if (isset($_GET['submit'])) {
                   <h3 class="card-title">Pilih Waktu</h3>
                 </div>
                 <div class="card-body">
-                  <form action="" method="GET">
+                  <form action="" method="POST">
                     <div class="row">
                       <div class="col">
                         <div class="form-group">
@@ -155,15 +163,17 @@ if (isset($_GET['submit'])) {
                       </tr>
                     </thead>
                     <tbody>
+                      <?php foreach ($data_pengembalian as $dp) : ?>
                       <tr>
-                        <td>190411100177</td>
-                        <td>Galih Pinjam</td>
-                        <td>Tablet</td>
-                        <td>Pakai</td>
-                        <td>14-04-2024</td>
-                        <td>20-04-2024</td>
-                        <td>15-04-2024</td>
+                        <td><?= $dp['ni_user'] ?></td>
+                        <td><?= $dp['nama_user'] ?></td>
+                        <td><?= $dp['nama_barang'] ?></td>
+                        <td><?= $dp['status_barang'] ?></td>
+                        <td><?= $dp['tanggal_pinjam'] ?></td>
+                        <td><?= $dp['tanggal_kembali'] ?></td>
+                        <td><?= $dp['tgl_serah'] ?></td>
                       </tr>
+                      <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                       <tr>
@@ -193,11 +203,11 @@ if (isset($_GET['submit'])) {
 
 </html>
 <script>
-  // Ambil elemen alert
-  var alert = document.getElementById('myAlert');
+// Ambil elemen alert
+var alert = document.getElementById('myAlert');
 
-  // Tutup alert setelah 3 detik
-  setTimeout(function() {
-    alert.style.display = 'none';
-  }, 10000);
+// Tutup alert setelah 3 detik
+setTimeout(function() {
+  alert.style.display = 'none';
+}, 10000);
 </script>

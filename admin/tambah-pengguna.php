@@ -1,3 +1,35 @@
+<?php
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
+}
+
+
+if (isset($_POST['submit'])) {
+  $data = [
+    'nama_user' => $_POST['nama_user'],
+    'ni_user' => $_POST['ni_user'],
+    'jk_user' => $_POST['jk_user'],
+    'telp_user' => $_POST['telp_user'],
+    'alamat_user' => $_POST['alamat_user'],
+    'username_user' => $_POST['ni_user'],
+    'password_user' => $_POST['ni_user'],
+    'role_user' => $_POST['role_user'],
+  ];
+  if (!input_check($data)) {
+    echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
+  } else {
+    insert('users', $data);
+    header('location:daftar-pengguna.php');
+    exit();
+  }
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,7 +105,7 @@
                     </div>
                     <div class="form-group">
                       <label for="ni_user">Id Pengguna</label>
-                      <input type="text" name="ni_user" class="form-control" id="ni_user" placeholder="ID Pengguna...">
+                      <input type="text" name="ni_user" class="form-control" id="ni_user" placeholder="NIP / NISN...">
                     </div>
                     <div class="form-group">
                       <label>Jenis Kelamin Pengguna</label>

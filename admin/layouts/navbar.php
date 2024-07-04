@@ -72,7 +72,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="return confirm('Anda Yakin Akan Logout?')">
+                <a href="logout.php" class="nav-link" onclick="return confirm('Anda Yakin Akan Logout?')">
                   <i class="nav-icon fas fa-power-off"></i>
                   <p>
                     Logout

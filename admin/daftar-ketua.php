@@ -1,3 +1,39 @@
+<?php
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
+}
+
+$datas = mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang USING(id_ruangbarang)");
+
+if (isset($_GET['hapus'])) {
+  $id_hapus = mysqli_escape_string($conn, $_GET['hapus']);
+  $condition = [
+    'id_pj' => $id_hapus,
+  ];
+  delete('pj_ruang', $condition);
+  header('location: daftar-ketua.php');
+  exit();
+}
+
+if (isset($_GET['resetpw'])) {
+  $id_pj = mysqli_escape_string($conn, $_GET['resetpw']);
+  $data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang WHERE id_pj = '$id_pj'"));
+  $data = [
+    'password_pj' => $data_pj['username_pj'],
+  ];
+  $condition = [
+    'id_pj' => $id_pj,
+  ];
+  update('pj_ruang', $data, $condition);
+  header('location: daftar-ketua.php');
+  exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,8 +45,7 @@
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
-        width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
     </div>
 
     <!-- Navbar -->
@@ -43,7 +78,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Daftar Pengguna</h1>
+              <h1 class="m-0">Daftar Ketua Ruang</h1>
             </div>
             <!-- /.col -->
           </div>
@@ -57,42 +92,45 @@
       <section class="content">
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
-          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Sukses</strong> Data Berhasil di Simpan.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           <?php
             unset($_SESSION['sukses']);
+            unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
-          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Sukses</strong> Data Berhasil di Edit.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           <?php
             unset($_SESSION['edit']);
+            unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Gagal</strong> Data Gagal di Simpan.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+            <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+              <strong>Gagal</strong><?= $_SESSION['msg'] ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           <?php
             unset($_SESSION['gagal']);
+            unset($_SESSION['msg']);
           endif; ?>
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-header d-flex align-items-center">
-                  <h3 class="card-title">Data Pengguna</h3>
+                  <h3 class="card-title">Data Ketua Ruang</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -108,18 +146,20 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Galih Pinjam</td>
-                        <td>Laki - Laki</td>
-                        <td>081939301705</td>
-                        <td>Jalan Bandeng No 5 RT/RW 006/001 Kolor Sumenep</td>
-                        <td>Akuntansi dan Keuangan Lembaga</td>
-                        <td>
-                          <a href="edit-ketua.php" class="btn btn-sm btn-warning"><i class="fas fa-pen-alt"></i></a>
-                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                          <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-undo"></i></a>
-                        </td>
-                      </tr>
+                      <?php foreach ($datas as $data) : ?>
+                        <tr>
+                          <td><?= $data['nama_pj'] ?></td>
+                          <td><?= $data['jk_pj'] ?></td>
+                          <td><?= $data['telp_pj'] ?></td>
+                          <td><?= $data['alamat_pj'] ?></td>
+                          <td><?= $data['nama_ruangbarang'] ?></td>
+                          <td>
+                            <a href="edit-ketua.php?edit=<?= $data['id_pj'] ?>" class="btn btn-sm btn-warning"><i class="fas fa-pen-alt"></i></a>
+                            <a href="?hapus=<?= $data['id_pj'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Data Ini Akan di Hapus?')"><i class="fas fa-trash-alt"></i></a>
+                            <a href="?resetpw=<?= $data['id_pj'] ?>" class="btn btn-sm btn-primary" onclick="return confirm('Reset Password Akun ini?')"><i class="fas fa-undo"></i></a>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                       <tr>
@@ -148,11 +188,11 @@
 
 </html>
 <script>
-// Ambil elemen alert
-var alert = document.getElementById('myAlert');
+  // Ambil elemen alert
+  var alert = document.getElementById('myAlert');
 
-// Tutup alert setelah 3 detik
-setTimeout(function() {
-  alert.style.display = 'none';
-}, 10000);
+  // Tutup alert setelah 3 detik
+  setTimeout(function() {
+    alert.style.display = 'none';
+  }, 10000);
 </script>

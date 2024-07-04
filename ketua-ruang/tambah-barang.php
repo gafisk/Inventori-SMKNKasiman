@@ -6,31 +6,30 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
-$data_pj =
-  mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
+$data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
 
 if (isset($_POST['submit'])) {
   $id_ruangbarang = $data_pj['id_ruangbarang'];
-  $nama_barang = mysqli_escape_string($conn, $_POST['nama_barang']);
-  $stok_barang = mysqli_escape_string($conn, $_POST['stok_barang']);
-  $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
-  if (empty($id_ruangbarang) || empty($nama_barang) || empty($stok_barang) || empty($status_barang)) {
-    echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
-    echo "<script>window.location.href='tambah-barang.php';</script>";
-    exit();
+  $data1 = [
+    'id_ruangbarang' => $id_ruangbarang,
+    'nama_barang' => $_POST['nama_barang'],
+    'stok_barang' => $_POST['stok_barang'],
+    'status_barang' => $_POST['status_barang'],
+  ];
+
+  if (!input_check($data1)) {
+    echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
   } else {
-    $query = mysqli_query($conn, "INSERT INTO barang VALUES (NULL, '$id_ruangbarang', '$nama_barang', '$stok_barang', '$status_barang')");
-    if ($query) {
-      $_SESSION['sukses'] = true;
-      $_SESSION['msg'] = 'Berhasil Menambahkan Data';
-      header('location:daftar-barang.php');
-      exit();
-    } else {
-      $_SESSION['gagal'] = true;
-      $_SESSION['msg'] = 'Gagal Menambahkan Data';
-      header('location:daftar-barang.php');
-      exit();
-    }
+    insert('barang', $data1);
+    $id_barang = mysqli_insert_id($conn);
+    $data2 = [
+      'id_barang' => $id_barang,
+      'jumlah_baik' => $_POST['jumlah_baik'],
+      'jumlah_rusak' => $_POST['jumlah_rusak'],
+    ];
+    insert('keadaan_barang', $data2);
+    header('location:daftar-barang.php');
+    exit();
   }
 }
 
@@ -118,6 +117,14 @@ if (isset($_POST['submit'])) {
                       <input type="number" name="stok_barang" class="form-control" id="stok_barang" placeholder="Stok Barang....">
                     </div>
                     <div class="form-group">
+                      <label for="stok_barang">Jumlah Baik</label>
+                      <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik" placeholder="Jumlah Barang Baik....">
+                    </div>
+                    <div class="form-group">
+                      <label for="stok_barang">Jumlah Rusak</label>
+                      <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak" placeholder="Jumlah Barang Rusak....">
+                    </div>
+                    <div class="form-group">
                       <label>Status Barang</label>
                       <select class="form-control" name="status_barang">
                         <option value="Tetap">Barang Tetap</option>
@@ -146,5 +153,17 @@ if (isset($_POST['submit'])) {
   <!-- /.content-wrapper -->
   <?php include('layouts/footer.php') ?>
 </body>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    var stokBarang = parseInt(document.getElementById('stok_barang').value);
+    var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
+    var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
+
+    if (jumlahBaik + jumlahRusak != stokBarang) {
+      event.preventDefault(); // Mencegah pengiriman form
+      alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
+    }
+  });
+</script>
 
 </html>

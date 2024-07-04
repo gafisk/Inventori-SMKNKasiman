@@ -1,14 +1,13 @@
 <?php
-if (isset($_GET['submit'])) {
-  $tgl_awal = $_GET['tanggal_awal'];
-  $tgl_akhir = $_GET['tanggal_akhir'];
-  $ruangan = $_GET['ruangan'];
-  if (empty($tgl_awal) || empty($tgl_akhir) || empty($ruangan)) {
-    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
-    echo "<script>window.location.href='laporan-barang.php';</script>";
-    exit();
-  }
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
 }
+
+$datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang ON barang.id_ruangbarang = ruang_barang.id_ruangbarang");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,8 +20,7 @@ if (isset($_GET['submit'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
-        width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
     </div>
 
     <!-- Navbar -->
@@ -69,75 +67,37 @@ if (isset($_GET['submit'])) {
       <section class="content">
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
-          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Sukses</strong> Data Berhasil di Simpan.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+              <strong>Sukses</strong> Data Berhasil di Simpan.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           <?php
             unset($_SESSION['sukses']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
-          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Sukses</strong> Data Berhasil di Edit.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+              <strong>Sukses</strong> Data Berhasil di Edit.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           <?php
             unset($_SESSION['edit']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Gagal</strong> Data Gagal di Simpan.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+            <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+              <strong>Gagal</strong> Data Gagal di Simpan.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           <?php
             unset($_SESSION['gagal']);
           endif; ?>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title">Pilih Keterangan</h3>
-                </div>
-                <div class="card-body">
-                  <form action="" method="GET">
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-group">
-                          <label>Ruangan</label>
-                          <select name="ruangan" class="form-control select2bs4" style="width: 100%;">
-                            <option value="">Pilih Ruangan</option>
-                            <option value="">Galih 1</option>
-                            <option value="">Galih 2</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-group">
-                          <label for="tanggal_awal">Dari Tanggal</label>
-                          <input type="date" class="form-control" id="tanggal_awal" name="tanggal_awal">
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-group">
-                          <label for="tanggal_akhir">Sampai Tanggal</label>
-                          <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir">
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" name="submit" class="btn btn-primary">Pilih Keterangan</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
@@ -150,21 +110,32 @@ if (isset($_GET['submit'])) {
                     <thead>
                       <tr>
                         <th>Nama Barang</th>
+                        <th>Ruang Barang</th>
                         <th>Stok Barang</th>
+                        <th>Jumlah Rusak</th>
+                        <th>Jumlah Baik</th>
                         <th>Status Barang</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Tablet</td>
-                        <td>5</td>
-                        <td>Pakai</td>
-                      </tr>
+                      <?php foreach ($datas as $data) : ?>
+                        <tr>
+                          <td><?= $data['nama_barang'] ?></td>
+                          <td><?= $data['nama_ruangbarang'] ?></td>
+                          <td><?= $data['stok_barang'] ?></td>
+                          <td><?= $data['jumlah_rusak'] ?></td>
+                          <td><?= $data['jumlah_baik'] ?></td>
+                          <td><?= $data['status_barang'] ?></td>
+                        </tr>
+                      <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                       <tr>
                         <th>Nama Barang</th>
+                        <th>Ruang Barang</th>
                         <th>Stok Barang</th>
+                        <th>Jumlah Rusak</th>
+                        <th>Jumlah Baik</th>
                         <th>Status Barang</th>
                       </tr>
                     </tfoot>
@@ -185,11 +156,11 @@ if (isset($_GET['submit'])) {
 
 </html>
 <script>
-// Ambil elemen alert
-var alert = document.getElementById('myAlert');
+  // Ambil elemen alert
+  var alert = document.getElementById('myAlert');
 
-// Tutup alert setelah 3 detik
-setTimeout(function() {
-  alert.style.display = 'none';
-}, 10000);
+  // Tutup alert setelah 3 detik
+  setTimeout(function() {
+    alert.style.display = 'none';
+  }, 10000);
 </script>

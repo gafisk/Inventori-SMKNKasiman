@@ -6,7 +6,30 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
+$data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
+$id_ruangbarang = $data_pj['id_ruangbarang'];
 
+$data_peminjamans = mysqli_query($conn, "SELECT * FROM peminjaman INNER JOIN pj_ruang USING(id_pj) INNER JOIN barang USING(id_barang) INNER JOIN users USING(id_user) WHERE barang.id_ruangbarang = '$id_ruangbarang' AND status_peminjaman = 'Pinjam'");
+
+if (isset($_GET['kembali'])) {
+  $id_peminjaman = mysqli_escape_string($conn, $_GET['kembali']);
+  $data_pinjam = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM peminjaman WHERE id_peminjaman = '$id_peminjaman'"));
+  $b_tgl_pinjam = $data_pinjam['tanggal_pinjam'];
+  $id_barang = $data_pinjam['id_barang'];
+  $update_stok = mysqli_query($conn, "UPDATE barang SET stok_barang = stok_barang + 1 WHERE id_barang = '$id_barang'");
+  if ($update_stok) {
+    $update_peminjaman = mysqli_query($conn, "UPDATE peminjaman SET status_peminjaman = 'Kembali' WHERE id_peminjaman = '$id_peminjaman'");
+    if ($update_peminjaman) {
+      $add_pengembalian = mysqli_query($conn, "INSERT INTO pengembalian (id_peminjaman, id_pj, tanggal_pinjam, tanggal_kembali) VALUES ('$id_peminjaman', '$id_pj', '$b_tgl_pinjam', NOW())");
+      if ($add_pengembalian) {
+        $_SESSION['sukses'] = true;
+        $_SESSION['msg'] = "Berhasil Mengembalikan Barang";
+        header('location: data-peminjaman.php');
+        exit();
+      }
+    }
+  }
+}
 
 ?>
 
@@ -69,35 +92,38 @@ $id_pj = $_SESSION['id_pj'];
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
             <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Simpan.
+              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>.
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           <?php
             unset($_SESSION['sukses']);
+            unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
             <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Edit.
+              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>.
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           <?php
             unset($_SESSION['edit']);
+            unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
             <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Gagal</strong> Data Gagal di Simpan.
+              <strong>Gagal</strong> <?= $_SESSION['msg'] ?>.
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           <?php
             unset($_SESSION['gagal']);
+            unset($_SESSION['msg']);
           endif; ?>
           <div class="row">
             <div class="col-lg-12">
@@ -116,21 +142,24 @@ $id_pj = $_SESSION['id_pj'];
                         <th>Nama Barang</th>
                         <th>Tanggal Pinjam</th>
                         <th>Tanggal Kembali</th>
-                        <th style="width: 10%;">Aksi</th>
+                        <th style="width: 11%;">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>190411100177</td>
-                        <td>Galih Pinjam</td>
-                        <td>Tablet</td>
-                        <td>14-04-2024</td>
-                        <td>20-04-2024</td>
-                        <td>
-                          <a href="edit-peminjaman.php" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                      </tr>
+                      <?php foreach ($data_peminjamans as $data_p) : ?>
+                        <tr>
+                          <td><?= $data_p['ni_user'] ?></td>
+                          <td><?= $data_p['nama_user'] ?></td>
+                          <td><?= $data_p['nama_barang'] ?></td>
+                          <td><?= $data_p['tanggal_pinjam'] ?></td>
+                          <td><?= $data_p['tanggal_kembali'] ?></td>
+                          <td>
+                            <a href="?kembali=<?= $data_p['id_peminjaman'] ?>" onclick="return confirm('Apakah barang sudah dikembalikan?')" class="btn btn-sm btn-success"><i class="fas fa-check"></i></a>
+                            <a href="edit-peminjaman.php?edit=<?= $data_p['id_peminjaman'] ?>" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="?hapus=<?= $data_p['id_peminjaman'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                          </td>
+                        </tr>
+                      <?php endforeach ?>
                     </tbody>
                     <tfoot>
                       <tr>

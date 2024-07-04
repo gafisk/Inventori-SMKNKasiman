@@ -1,3 +1,43 @@
+<?php
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
+}
+
+$pj_ruang = mysqli_query($conn, "SELECT * FROM pj_ruang");
+$ruang_barangs = mysqli_query($conn, "SELECT * FROM ruang_barang");
+$used_ids = [];
+while ($row = mysqli_fetch_assoc($pj_ruang)) {
+  $used_ids[] = $row['id_ruangbarang'];
+}
+
+if (isset($_GET['edit'])) {
+  $id_pj = mysqli_escape_string($conn, $_GET['edit']);
+  $datas = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang WHERE id_pj = '$id_pj'"));
+  if (isset($_POST['submit'])) {
+    $data = [
+      'nama_pj' => $_POST['nama_pj'],
+      'jk_pj' => $_POST['jk_pj'],
+      'telp_pj' => $_POST['telp_pj'],
+      'alamat_pj' => $_POST['alamat_pj'],
+    ];
+    $condition = [
+      'id_pj' => $id_pj,
+    ];
+    if (!input_check($data)) {
+      echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
+    } else {
+      update('pj_ruang', $data, $condition);
+      header('location:daftar-ketua.php');
+      exit();
+    }
+  };
+};
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,32 +111,26 @@
                     <div class="form-group">
                       <label for="nama_pj">Nama Ketua Ruangan</label>
                       <input type="text" class="form-control" id="nama_pj" name="nama_pj"
-                        placeholder="Nama Ketua Ruangan...">
+                        value="<?= $datas['nama_pj'] ?>" placeholder="Nama Ketua Ruangan...">
                     </div>
                     <div class="form-group">
                       <label>Jenis Kelamin Ketua Ruangan</label>
                       <select class="form-control" name="jk_pj">
-                        <option value="Laki - laki">Laki - Laki</option>
-                        <option value="Perempuan">Perempuan</option>
+                        <option <?= ($datas['jk_pj'] == 'Laki-laki') ? "selected" : "" ?> value="Laki-laki">Laki -
+                          Laki</option>
+                        <option <?= ($datas['jk_pj'] == 'Perempuan') ? "selected" : "" ?> value="Perempuan">Perempuan
+                        </option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="telp_pj">No Telp Ketua Ruangan</label>
                       <input type="text" name="telp_pj" class="form-control" id="telp_pj"
-                        placeholder="No Telp Ketua Ruangan">
+                        value="<?= $datas['telp_pj'] ?>" placeholder="No Telp Ketua Ruangan">
                     </div>
                     <div class="form-group">
                       <label for="alamat_pj">Alamat Ketua Ruangan</label>
-                      <textarea class="form-control" name="alamat_pj" id="alamat_pj" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label>Penempatan Ruangan</label>
-                      <select name="id_ruangbarang" class="form-control select2bs4" style="width: 100%;">
-                        <option value="">Pilih Penempatan</option>
-                        <option value="">Ruang 1</option>
-                        <option value="">Ruang 2</option>
-                        <option value="">Ruang 3</option>
-                      </select>
+                      <textarea class="form-control" name="alamat_pj" id="alamat_pj"
+                        rows="3"><?= $datas['alamat_pj'] ?></textarea>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">

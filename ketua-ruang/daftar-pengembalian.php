@@ -7,6 +7,9 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
 }
 $id_pj = $_SESSION['id_pj'];
 
+$data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali as tgl_serah FROM pengembalian INNER JOIN peminjaman ON pengembalian.id_peminjaman = peminjaman.id_peminjaman INNER JOIN barang ON peminjaman.id_barang = barang.id_barang INNER JOIN users ON peminjaman.id_user = users.id_user WHERE pengembalian.id_pj = '$id_pj'");
+
+
 
 ?>
 
@@ -54,7 +57,7 @@ $id_pj = $_SESSION['id_pj'];
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Daftar Barang</h1>
+              <h1 class="m-0">Daftar Pengembalian</h1>
             </div>
             <!-- /.col -->
           </div>
@@ -69,41 +72,44 @@ $id_pj = $_SESSION['id_pj'];
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
             <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Simpan.
+              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           <?php
             unset($_SESSION['sukses']);
+            unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
             <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Edit.
+              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           <?php
             unset($_SESSION['edit']);
+            unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
             <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Gagal</strong> Data Gagal di Simpan.
+              <strong>Gagal</strong> <?= $_SESSION['msg'] ?>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           <?php
-            unset($_SESSION['gagal']);
+            unset($_SESSION['gag  al']);
+            unset($_SESSION['msg']);
           endif; ?>
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-header d-flex align-items-center">
-                  <h3 class="card-title">Data Barang</h3>
+                  <h3 class="card-title">Data Pengembalian</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -120,17 +126,19 @@ $id_pj = $_SESSION['id_pj'];
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>190411100177</td>
-                        <td>Galih Pinjam</td>
-                        <td>Tablet</td>
-                        <td>14-04-2024</td>
-                        <td>20-04-2024</td>
-                        <td>18-04-2024</td>
-                        <td>
-                          <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                      </tr>
+                      <?php foreach ($data_pengembalian as $dp) : ?>
+                        <tr>
+                          <td><?= $dp['ni_user'] ?></td>
+                          <td><?= $dp['nama_user'] ?></td>
+                          <td><?= $dp['nama_barang'] ?></td>
+                          <td><?= $dp['tanggal_pinjam'] ?></td>
+                          <td><?= $dp['tanggal_kembali'] ?></td>
+                          <td><?= $dp['tgl_serah'] ?></td>
+                          <td>
+                            <a href="?hapus=<?= $dp['id_pengembalian'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')"><i class="fas fa-trash-alt"></i></a>
+                          </td>
+                        </tr>
+                      <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                       <tr>

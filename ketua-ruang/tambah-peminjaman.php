@@ -6,7 +6,41 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
+$data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
+$id_ruangbarang = $data_pj['id_ruangbarang'];
+$data_users = mysqli_query($conn, "SELECT * FROM users WHERE role_user = 'Guru' OR role_user = 'Siswa'");
+$data_barangs = mysqli_query($conn, "SELECT * FROM barang WHERE id_ruangbarang = '$id_ruangbarang'");
 
+if (isset($_POST['submit'])) {
+  $id_user = mysqli_escape_string($conn, $_POST['nama_peminjam']);
+  $id_barang = mysqli_escape_string($conn, $_POST['nama_barang']);
+  $tanggal_kembali = mysqli_escape_string($conn, $_POST['tanggal_kembali']);
+  $status_peminjaman = 'Pinjam';
+  if (empty($id_user) || empty($id_barang) || empty($tanggal_kembali)) {
+    echo "<script>alert('Kolom Inputan Data Tidak Boleh Kosong!');</script>";
+  } else {
+    $query = mysqli_query($conn, "INSERT INTO peminjaman VALUES(NULL, '$id_pj', '$id_user', '$id_barang', NOW(), '$tanggal_kembali', '$status_peminjaman')");
+    if ($query) {
+      $update_stok = mysqli_query($conn, "UPDATE barang SET stok_barang = stok_barang - 1 WHERE id_barang = '$id_barang'");
+      if ($update_stok) {
+        $_SESSION['sukses'] = true;
+        $_SESSION['msg'] = 'Berhasil Menambahkan Peminjaman';
+        header('location:data-peminjaman.php');
+        exit();
+      } else {
+        $_SESSION['gagal'] = true;
+        $_SESSION['msg'] = 'Gagal Menambahkan Data';
+        header('location:data-peminjaman.php');
+        exit();
+      }
+    } else {
+      $_SESSION['gagal'] = true;
+      $_SESSION['msg'] = 'Gagal Menambahkan Peminjaman';
+      header('location:data-peminjaman.php');
+      exit();
+    }
+  }
+}
 
 ?>
 
@@ -81,30 +115,34 @@ $id_pj = $_SESSION['id_pj'];
                   <div class="card-body">
                     <div class="form-group">
                       <label for="ketua_lab">Nama Ketua Lab</label>
-                      <input type="text" class="form-control" id="ketua_lab" value="Galih Ketua" readonly>
+                      <input type="text" class="form-control" id="ketua_lab" value="<?= $_SESSION['nama_pj'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label>Nama Peminjam</label>
                       <small class="text-muted">Identitas - Nama</small>
                       <select name="nama_peminjam" class="form-control select2bs4" style="width: 100%;">
                         <option value="">Pilih Peminjam</option>
-                        <option value="">Galih 1</option>
-                        <option value="">Galih 2</option>
+                        <?php foreach ($data_users as $data_user) : ?>
+                          <option value="<?= $data_user['id_user'] ?>"><?= $data_user['ni_user'] ?> -
+                            <?= $data_user['nama_user'] ?> - <?= $data_user['role_user'] ?></option>
+                        <?php endforeach ?>
                       </select>
                     </div>
                     <div class="form-group">
                       <label>Nama Barang</label>
                       <select name="nama_barang" class="form-control select2bs4" style="width: 100%;">
                         <option value="">Pilih Barang</option>
-                        <option value="">Barang 1</option>
-                        <option disabled value="">Barang 2</option>
+                        <?php foreach ($data_barangs as $data_barang) : ?>
+                          <option value="<?= $data_barang['id_barang'] ?>"><?= $data_barang['nama_barang'] ?> -
+                            <?= $data_barang['stok_barang'] ?></option>
+                        <?php endforeach; ?>
                       </select>
                     </div>
                     <div class="form-group">
                       <div class="row">
                         <div class="col-md-6">
                           <label for="tgl_pinjam">Tanggal Pinjam</label>
-                          <input name="tanggal_pinjam" type="date" class="form-control" id="tgl_pinjam" disabled>
+                          <input name="tgl_pinjam" type="date" class="form-control" id="tgl_pinjam" disabled>
                         </div>
                         <div class="col-md-6">
                           <label for="tgl_kembali">Tanggal Kembali</label>
@@ -118,8 +156,6 @@ $id_pj = $_SESSION['id_pj'];
                 </form>
               </div>
               <!-- /.card -->
-
-
               </form>
             </div>
             <!-- /.card -->

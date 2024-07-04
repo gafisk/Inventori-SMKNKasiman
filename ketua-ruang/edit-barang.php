@@ -10,21 +10,31 @@ $data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER 
 
 if (isset($_GET['edit'])) {
   $id_barang = mysqli_escape_string($conn, $_GET['edit']);
-  $data_barang = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM barang WHERE id_barang = '$id_barang'"));
+  $data_barang = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) WHERE barang.id_barang = '$id_barang'"));
   if (isset($_POST['submit'])) {
     $id_ruangbarang = $data_pj['id_ruangbarang'];
     $nama_barang = mysqli_escape_string($conn, $_POST['nama_barang']);
     $stok_barang = mysqli_escape_string($conn, $_POST['stok_barang']);
     $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
+    $jumlah_baik = mysqli_escape_string($conn, $_POST['jumlah_baik']);
+    $jumlah_rusak = mysqli_escape_string($conn, $_POST['jumlah_rusak']);
     if (empty($nama_barang) || empty($stok_barang) || empty($status_barang)) {
       echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
     } else {
       $query = mysqli_query($conn, "UPDATE barang SET nama_barang = '$nama_barang', stok_barang = '$stok_barang', status_barang = '$status_barang' WHERE id_barang = '$id_barang'");
       if ($query) {
-        $_SESSION['sukses'] = true;
-        $_SESSION['msg'] = "Data Berhasil Diperbaharui";
-        header('location:daftar-barang.php');
-        exit();
+        $update_keadaan = mysqli_query($conn, "UPDATE keadaan_barang SET jumlah_baik = '$jumlah_baik', jumlah_rusak = '$jumlah_rusak' WHERE id_barang = '$id_barang'");
+        if ($update_keadaan) {
+          $_SESSION['sukses'] = true;
+          $_SESSION['msg'] = "Data Berhasil Diperbaharui";
+          header('location:daftar-barang.php');
+          exit();
+        } else {
+          $_SESSION['gagal'] = true;
+          $_SESSION['msg'] = "Data Gagal Diperbaharui";
+          header('location:daftar-barang.php');
+          exit();
+        }
       } else {
         $_SESSION['gagal'] = true;
         $_SESSION['msg'] = "Data Gagal Diperbaharui";
@@ -127,6 +137,14 @@ if (isset($_GET['edit'])) {
                           Habis Pakai</option>
                       </select>
                     </div>
+                    <div class="form-group">
+                      <label for="jumlah_baik">Jumlah Baik</label>
+                      <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik" placeholder="Jumlah Barang Baik" value="<?= $data_barang['jumlah_baik'] ?>">
+                    </div>
+                    <div class="form-group">
+                      <label for="jumlah_rusak">Jumlah Rusak</label>
+                      <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak" placeholder="Jumlah Barang Rusak" value="<?= $data_barang['jumlah_rusak'] ?>">
+                    </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
                       <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
@@ -149,5 +167,18 @@ if (isset($_GET['edit'])) {
   <!-- /.content-wrapper -->
   <?php include('layouts/footer.php') ?>
 </body>
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    var stokBarang = parseInt(document.getElementById('stok_barang').value);
+    var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
+    var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
+
+    if (jumlahBaik + jumlahRusak != stokBarang) {
+      event.preventDefault(); // Mencegah pengiriman form
+      alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
+    }
+  });
+</script>
 
 </html>

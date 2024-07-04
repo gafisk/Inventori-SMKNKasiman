@@ -8,16 +8,24 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
 $id_pj = $_SESSION['id_pj'];
 $data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
 $id_ruangbarang = $data_pj['id_ruangbarang'];
-$data_barang = mysqli_query($conn, "SELECT * FROM barang WHERE id_ruangbarang = '$id_ruangbarang'");
+$data_barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) WHERE barang.id_ruangbarang = '$id_ruangbarang'");
 
 if (isset($_GET['hapus'])) {
   $id_barang = mysqli_escape_string($conn,  $_GET['hapus']);
   $query = mysqli_query($conn, "DELETE FROM barang WHERE id_barang = '$id_barang'");
   if ($query) {
-    $_SESSION['sukses'] = true;
-    $_SESSION['msg'] = 'Berhasil Menghapus Data';
-    header('location:daftar-barang.php');
-    exit();
+    $del = mysqli_query($conn, "DELETE FROM keadaan_barang WHERE id_barang = '$id_barang");
+    if ($del) {
+      $_SESSION['sukses'] = true;
+      $_SESSION['msg'] = 'Berhasil Menghapus Data';
+      header('location:daftar-barang.php');
+      exit();
+    } else {
+      $_SESSION['gagal'] = true;
+      $_SESSION['msg'] = 'Gagal Menghapus Data';
+      header('location:daftar-barang.php');
+      exit();
+    }
   } else {
     $_SESSION['gagal'] = true;
     $_SESSION['msg'] = 'Gagal Menghapus Data';
@@ -133,6 +141,8 @@ if (isset($_GET['hapus'])) {
                       <tr>
                         <th>Nama Barang</th>
                         <th>Stok Barang</th>
+                        <th>Barang Baik</th>
+                        <th>Barang Rusak</th>
                         <th>Status Barang</th>
                         <th style="width: 12%;">Aksi</th>
                       </tr>
@@ -142,6 +152,8 @@ if (isset($_GET['hapus'])) {
                         <tr>
                           <td><?= $barang['nama_barang'] ?></td>
                           <td><?= $barang['stok_barang'] ?></td>
+                          <td><?= $barang['jumlah_baik'] ?></td>
+                          <td><?= $barang['jumlah_rusak'] ?></td>
                           <td><?= ($barang['status_barang'] == 'Pakai') ? 'Barang Habis Pakai' : 'Barang Tetap' ?></td>
                           <td>
                             <a href="edit-barang.php?edit=<?= $barang['id_barang'] ?>" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i></a>
@@ -154,6 +166,8 @@ if (isset($_GET['hapus'])) {
                       <tr>
                         <th>Nama Barang</th>
                         <th>Stok Barang</th>
+                        <th>Barang Baik</th>
+                        <th>Barang Rusak</th>
                         <th>Status Barang</th>
                         <th>Aksi</th>
                       </tr>

@@ -1,3 +1,39 @@
+<?php
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
+}
+
+$pj_ruang = mysqli_query($conn, "SELECT * FROM pj_ruang");
+$ruang_barangs = mysqli_query($conn, "SELECT * FROM ruang_barang");
+$used_ids = [];
+while ($row = mysqli_fetch_assoc($pj_ruang)) {
+  $used_ids[] = $row['id_ruangbarang'];
+}
+
+if (isset($_POST['submit'])) {
+  $data = [
+    'nama_pj' => $_POST['nama_pj'],
+    'jk_pj' => $_POST['jk_pj'],
+    'telp_pj' => $_POST['telp_pj'],
+    'alamat_pj' => $_POST['alamat_pj'],
+    'username_pj' => $_POST['username_pj'],
+    'password_pj' => $_POST['username_pj'],
+    'id_ruangbarang' => $_POST['id_ruangbarang'],
+  ];
+  if (!input_check($data)) {
+    echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
+  } else {
+    insert('pj_ruang', $data);
+    header('location:daftar-ketua.php');
+    exit();
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,7 +112,7 @@
                     <div class="form-group">
                       <label>Jenis Kelamin Ketua Ruangan</label>
                       <select class="form-control" name="jk_pj">
-                        <option value="Laki - laki">Laki - Laki</option>
+                        <option value="Laki-laki">Laki - Laki</option>
                         <option value="Perempuan">Perempuan</option>
                       </select>
                     </div>
@@ -93,10 +129,18 @@
                       <label>Penempatan Ruangan</label>
                       <select name="id_ruangbarang" class="form-control select2bs4" style="width: 100%;">
                         <option value="">Pilih Penempatan</option>
-                        <option value="">Ruang 1</option>
-                        <option value="">Ruang 2</option>
-                        <option value="">Ruang 3</option>
+                        <?php foreach ($ruang_barangs as $rb) : ?>
+                        <option value="<?= htmlspecialchars($rb['id_ruangbarang']) ?>"
+                          <?= in_array($rb['id_ruangbarang'], $used_ids) ? 'disabled' : '' ?>>
+                          <?= htmlspecialchars($rb['role_ruang']) ?> - <?= htmlspecialchars($rb['nama_ruangbarang']) ?>
+                        </option>
+                        <?php endforeach; ?>
                       </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="nama_pj">Username</label>
+                      <input type="text" class="form-control" id="username_pj" name="username_pj"
+                        placeholder="Username Akun...">
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">

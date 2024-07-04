@@ -15,7 +15,7 @@
         <img src="../assets/dist/img/users.png" class="img-circle elevation-2" alt="User Image" />
       </div>
       <div class="info">
-        <a href="index.php" class="d-block">Galih PJ</a>
+        <a href="index.php" class="d-block"><?= $_SESSION['nama_user']?></a>
       </div>
     </div>
 
