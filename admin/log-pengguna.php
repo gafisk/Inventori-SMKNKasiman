@@ -1,12 +1,9 @@
 <?php
-if (isset($_GET['submit'])) {
-  $tgl_awal = $_GET['tanggal_awal'];
-  $tgl_akhir = $_GET['tanggal_akhir'];
-  if (empty($tgl_awal) || empty($tgl_akhir)) {
-    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
-    echo "<script>window.location.href='laporan-barang.php';</script>";
-    exit();
-  }
+session_start();
+include('../config/config.php');
+if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  exit();
 }
 ?>
 <!DOCTYPE html>

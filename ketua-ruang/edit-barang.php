@@ -58,7 +58,8 @@ if (isset($_GET['edit'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -118,36 +119,42 @@ if (isset($_GET['edit'])) {
                   <div class="card-body">
                     <div class="form-group">
                       <label for="nama_lab">Nama Lab</label>
-                      <input type="text" class="form-control" id="nama_lab" value="<?= $data_pj['nama_ruangbarang'] ?>" readonly>
+                      <input type="text" class="form-control" id="nama_lab" value="<?= $data_pj['nama_ruangbarang'] ?>"
+                        readonly>
                     </div>
                     <div class="form-group">
                       <label for="nama_barang">Nama Barang</label>
-                      <input type="text" name="nama_barang" class="form-control" id="nama_barang" placeholder="Nama Barang..." value="<?= $data_barang['nama_barang'] ?>">
+                      <input type="text" name="nama_barang" class="form-control" id="nama_barang"
+                        placeholder="Nama Barang..." value="<?= $data_barang['nama_barang'] ?>">
                     </div>
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
-                      <input type="number" name="stok_barang" class="form-control" id="stok_barang" placeholder="Tahun Terbit Buku" value="<?= $data_barang['stok_barang'] ?>">
+                      <input type="number" name="stok_barang" class="form-control" id="stok_barang"
+                        placeholder="Tahun Terbit Buku" value="<?= $data_barang['stok_barang'] ?>">
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
                       <select class="form-control" name="status_barang">
                         <option <?= ($data_barang['status_barang'] == 'Tetap') ? 'selected' : '' ?> value="Tetap">Barang
                           Tetap</option>
-                        <option <?= ($data_barang['status_barang'] == 'Pakai') ? 'selected' : '' ?> value="Tetap">Barang
+                        <option <?= ($data_barang['status_barang'] == 'Pakai') ? 'selected' : '' ?> value="Pakai">Barang
                           Habis Pakai</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="jumlah_baik">Jumlah Baik</label>
-                      <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik" placeholder="Jumlah Barang Baik" value="<?= $data_barang['jumlah_baik'] ?>">
+                      <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik"
+                        placeholder="Jumlah Barang Baik" value="<?= $data_barang['jumlah_baik'] ?>">
                     </div>
                     <div class="form-group">
                       <label for="jumlah_rusak">Jumlah Rusak</label>
-                      <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak" placeholder="Jumlah Barang Rusak" value="<?= $data_barang['jumlah_rusak'] ?>">
+                      <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak"
+                        placeholder="Jumlah Barang Rusak" value="<?= $data_barang['jumlah_rusak'] ?>">
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary"
+                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>
@@ -169,16 +176,16 @@ if (isset($_GET['edit'])) {
 </body>
 
 <script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    var stokBarang = parseInt(document.getElementById('stok_barang').value);
-    var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
-    var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
+document.querySelector('form').addEventListener('submit', function(event) {
+  var stokBarang = parseInt(document.getElementById('stok_barang').value);
+  var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
+  var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
 
-    if (jumlahBaik + jumlahRusak != stokBarang) {
-      event.preventDefault(); // Mencegah pengiriman form
-      alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
-    }
-  });
+  if (jumlahBaik + jumlahRusak != stokBarang) {
+    event.preventDefault(); // Mencegah pengiriman form
+    alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
+  }
+});
 </script>
 
 </html>

@@ -14,7 +14,7 @@ if (isset($_GET['hapus'])) {
   $id_barang = mysqli_escape_string($conn,  $_GET['hapus']);
   $query = mysqli_query($conn, "DELETE FROM barang WHERE id_barang = '$id_barang'");
   if ($query) {
-    $del = mysqli_query($conn, "DELETE FROM keadaan_barang WHERE id_barang = '$id_barang");
+    $del = mysqli_query($conn, "DELETE FROM keadaan_barang WHERE id_barang = '$id_barang'");
     if ($del) {
       $_SESSION['sukses'] = true;
       $_SESSION['msg'] = 'Berhasil Menghapus Data';
@@ -47,7 +47,8 @@ if (isset($_GET['hapus'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -94,36 +95,36 @@ if (isset($_GET['hapus'])) {
       <section class="content">
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> <?= $_SESSION['msg'] ?>.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['sukses']);
             unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> <?= $_SESSION['msg'] ?>.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['edit']);
             unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Gagal</strong> <?= $_SESSION['msg'] ?>.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Gagal</strong> <?= $_SESSION['msg'] ?>.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['gagal']);
             unset($_SESSION['msg']);
@@ -149,17 +150,20 @@ if (isset($_GET['hapus'])) {
                     </thead>
                     <tbody>
                       <?php foreach ($data_barang as $barang) : ?>
-                        <tr>
-                          <td><?= $barang['nama_barang'] ?></td>
-                          <td><?= $barang['stok_barang'] ?></td>
-                          <td><?= $barang['jumlah_baik'] ?></td>
-                          <td><?= $barang['jumlah_rusak'] ?></td>
-                          <td><?= ($barang['status_barang'] == 'Pakai') ? 'Barang Habis Pakai' : 'Barang Tetap' ?></td>
-                          <td>
-                            <a href="edit-barang.php?edit=<?= $barang['id_barang'] ?>" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                            <a href="?hapus=<?= $barang['id_barang'] ?>" onclick="return confirm('Anda Yakin Ingin Menghapus Data?')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                          </td>
-                        </tr>
+                      <tr>
+                        <td><?= $barang['nama_barang'] ?></td>
+                        <td><?= $barang['stok_barang'] ?></td>
+                        <td><?= $barang['jumlah_baik'] ?></td>
+                        <td><?= $barang['jumlah_rusak'] ?></td>
+                        <td><?= ($barang['status_barang'] == 'Pakai') ? 'Barang Habis Pakai' : 'Barang Tetap' ?></td>
+                        <td>
+                          <a href="edit-barang.php?edit=<?= $barang['id_barang'] ?>" class="btn btn-sm btn-warning"><i
+                              class="fas fa-pencil-alt"></i></a>
+                          <a href="?hapus=<?= $barang['id_barang'] ?>"
+                            onclick="return confirm('Anda Yakin Ingin Menghapus Data?')"
+                            class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                      </tr>
                       <?php endforeach; ?>
                     </tbody>
                     <tfoot>
@@ -189,11 +193,11 @@ if (isset($_GET['hapus'])) {
 
 </html>
 <script>
-  // Ambil elemen alert
-  var alert = document.getElementById('myAlert');
+// Ambil elemen alert
+var alert = document.getElementById('myAlert');
 
-  // Tutup alert setelah 3 detik
-  setTimeout(function() {
-    alert.style.display = 'none';
-  }, 10000);
+// Tutup alert setelah 3 detik
+setTimeout(function() {
+  alert.style.display = 'none';
+}, 10000);
 </script>
