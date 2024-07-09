@@ -7,6 +7,29 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
 }
 $id_pj = $_SESSION['id_pj'];
 
+if (isset($_GET['edit'])){
+  $id_peminjaman = mysqli_escape_string($conn, $_GET['edit']);
+  $datas = mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM peminjaman WHERE id_peminjaman = $id_peminjaman"));
+  $data_peminjam = mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM users WHERE id_user = ". $datas['id_user']));
+  $data_barang = mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM barang WHERE id_barang = ". $datas['id_barang']));
+  if(isset($_POST['submit'])){
+    $up = [
+      'tanggal_kembali' => $_POST['tanggal_kembali'],
+    ];
+    $condition = [
+      'id_peminjaman' => $id_peminjaman,
+    ];
+    if (!input_check($up)) {
+      echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
+    } else {
+      add_log('NULL', $_SESSION['id_pj'], "Mengedit data peminjaman " . $id_peminjaman);
+      update('peminjaman', $up, $condition);
+      header('location:data-peminjaman.php');
+      exit();
+    }
+
+  }
+}
 
 ?>
 
@@ -21,7 +44,8 @@ $id_pj = $_SESSION['id_pj'];
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -81,24 +105,17 @@ $id_pj = $_SESSION['id_pj'];
                   <div class="card-body">
                     <div class="form-group">
                       <label for="ketua_lab">Nama Ketua Lab</label>
-                      <input type="text" class="form-control" id="ketua_lab" value="Galih Ketua" readonly>
+                      <input type="text" class="form-control" id="ketua_lab" value="<?=$_SESSION['nama_pj']?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label>Nama Peminjam</label>
-                      <small class="text-muted">Identitas - Nama</small>
-                      <select name="nama_peminjam" class="form-control select2bs4" style="width: 100%;">
-                        <option value="">Pilih Peminjam</option>
-                        <option value="">Galih 1</option>
-                        <option value="">Galih 2</option>
-                      </select>
+                      <label for="nama_peminjam">Nama Peminjam</label>
+                      <input type="text" class="form-control" id="nama_peminjam"
+                        value="<?=$data_peminjam['nama_user']?>" readonly>
                     </div>
                     <div class="form-group">
-                      <label>Nama Barang</label>
-                      <select name="nama_barang" class="form-control select2bs4" style="width: 100%;">
-                        <option value="">Pilih Barang</option>
-                        <option value="">Barang 1</option>
-                        <option disabled value="">Barang 2</option>
-                      </select>
+                      <label for="nama_barang">Nama Peminjam</label>
+                      <input type="text" class="form-control" id="nama_barang" value="<?=$data_barang['nama_barang']?>"
+                        readonly>
                     </div>
                     <div class="form-group">
                       <div class="row">
@@ -108,12 +125,14 @@ $id_pj = $_SESSION['id_pj'];
                         </div>
                         <div class="col-md-6">
                           <label for="tgl_kembali">Tanggal Kembali</label>
-                          <input name="tanggal_kembali" type="date" class="form-control" id="tgl_kembali">
+                          <input name="tanggal_kembali" type="date" class="form-control" id="tgl_kembali"
+                            value="<?=$datas['tanggal_kembali']?>">
                         </div>
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary"
+                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>
@@ -136,44 +155,44 @@ $id_pj = $_SESSION['id_pj'];
 
 </html>
 <script>
-  var nBulan = 2;
+var nBulan = 2;
 
-  function formatDate(date) {
-    var dd = String(date.getDate()).padStart(2, '0');
-    var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
-    var yyyy = date.getFullYear();
-    return yyyy + '-' + mm + '-' + dd;
+function formatDate(date) {
+  var dd = String(date.getDate()).padStart(2, '0');
+  var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+  var yyyy = date.getFullYear();
+  return yyyy + '-' + mm + '-' + dd;
+}
+
+function setTanggal() {
+  var today = new Date();
+  var tgl_pinjam = formatDate(today); // 'YYYY-MM-DD'
+
+  if (document.getElementById('tgl_pinjam')) {
+    document.getElementById('tgl_pinjam').value = tgl_pinjam;
   }
 
-  function setTanggal() {
-    var today = new Date();
-    var tgl_pinjam = formatDate(today); // 'YYYY-MM-DD'
+  var nextDate = new Date(today);
+  nextDate.setMonth(nextDate.getMonth() + nBulan);
+  var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
 
-    if (document.getElementById('tgl_pinjam')) {
-      document.getElementById('tgl_pinjam').value = tgl_pinjam;
-    }
+  if (document.getElementById('tgl_kembali')) {
+    document.getElementById('tgl_kembali').value = tgl_kembali;
+  }
+}
 
-    var nextDate = new Date(today);
+setTimeout(setTanggal, 100);
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('tgl_pinjam').addEventListener('change', function() {
+    var selectedDate = new Date(this.value);
+    var nextDate = new Date(selectedDate);
     nextDate.setMonth(nextDate.getMonth() + nBulan);
     var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
 
     if (document.getElementById('tgl_kembali')) {
       document.getElementById('tgl_kembali').value = tgl_kembali;
     }
-  }
-
-  setTimeout(setTanggal, 100);
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('tgl_pinjam').addEventListener('change', function() {
-      var selectedDate = new Date(this.value);
-      var nextDate = new Date(selectedDate);
-      nextDate.setMonth(nextDate.getMonth() + nBulan);
-      var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
-
-      if (document.getElementById('tgl_kembali')) {
-        document.getElementById('tgl_kembali').value = tgl_kembali;
-      }
-    });
   });
+});
 </script>
