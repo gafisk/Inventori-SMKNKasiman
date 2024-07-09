@@ -22,11 +22,12 @@ if (isset($_POST['submit'])) {
         $_SESSION['nama_user'] = $row['nama_user'];
         $_SESSION['ni_user'] = $row['ni_user'];
         $_SESSION['role_user'] = $row['role_user'];
-
         if ($row['role_user'] == 'Guru' || $row['role_user'] == 'Siswa') {
           echo '<script>alert("Anda berhasil login. Redirecting..."); window.location.href="users/";</script>';
+          add_log('NULL', 'NULL', $_SESSION['nama_user'] . " User Berusaha Login");
           exit();
         } else {
+          add_log('NULL', 'NULL', "Kepala Sekolah Login");
           echo '<script>alert("Anda berhasil login. Redirecting..."); window.location.href="kepala-sekolah/";</script>';
           exit();
         }
@@ -56,7 +57,8 @@ if (isset($_POST['submit'])) {
   <title>Login Inventori</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
@@ -75,12 +77,12 @@ if (isset($_POST['submit'])) {
       <div class="card-body">
         <p class="login-box-msg">Login Untuk Memulai Aplikasi</p>
         <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Gagal Login</strong> <?= $_SESSION['msg'] ?> .
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+        <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+          <strong>Gagal Login</strong> <?= $_SESSION['msg'] ?> .
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         <?php
           unset($_SESSION['gagal']);
           unset($_SESSION['msg']);
