@@ -25,6 +25,7 @@ if (isset($_POST['submit'])) {
       if ($update_stok) {
         $_SESSION['sukses'] = true;
         $_SESSION['msg'] = 'Berhasil Menambahkan Peminjaman';
+        add_log('NULL', $_SESSION['id_pj'], "Menambahkan Peminjaman ". $id_user);
         header('location:data-peminjaman.php');
         exit();
       } else {
@@ -55,7 +56,8 @@ if (isset($_POST['submit'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -115,7 +117,8 @@ if (isset($_POST['submit'])) {
                   <div class="card-body">
                     <div class="form-group">
                       <label for="ketua_lab">Nama Ketua Lab</label>
-                      <input type="text" class="form-control" id="ketua_lab" value="<?= $_SESSION['nama_pj'] ?>" readonly>
+                      <input type="text" class="form-control" id="ketua_lab" value="<?= $_SESSION['nama_pj'] ?>"
+                        readonly>
                     </div>
                     <div class="form-group">
                       <label>Nama Peminjam</label>
@@ -123,8 +126,8 @@ if (isset($_POST['submit'])) {
                       <select name="nama_peminjam" class="form-control select2bs4" style="width: 100%;">
                         <option value="">Pilih Peminjam</option>
                         <?php foreach ($data_users as $data_user) : ?>
-                          <option value="<?= $data_user['id_user'] ?>"><?= $data_user['ni_user'] ?> -
-                            <?= $data_user['nama_user'] ?> - <?= $data_user['role_user'] ?></option>
+                        <option value="<?= $data_user['id_user'] ?>"><?= $data_user['ni_user'] ?> -
+                          <?= $data_user['nama_user'] ?> - <?= $data_user['role_user'] ?></option>
                         <?php endforeach ?>
                       </select>
                     </div>
@@ -133,8 +136,8 @@ if (isset($_POST['submit'])) {
                       <select name="nama_barang" class="form-control select2bs4" style="width: 100%;">
                         <option value="">Pilih Barang</option>
                         <?php foreach ($data_barangs as $data_barang) : ?>
-                          <option value="<?= $data_barang['id_barang'] ?>"><?= $data_barang['nama_barang'] ?> -
-                            <?= $data_barang['stok_barang'] ?></option>
+                        <option value="<?= $data_barang['id_barang'] ?>"><?= $data_barang['nama_barang'] ?> -
+                          <?= $data_barang['stok_barang'] ?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
@@ -151,7 +154,8 @@ if (isset($_POST['submit'])) {
                       </div>
                     </div>
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary"
+                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>
@@ -172,44 +176,44 @@ if (isset($_POST['submit'])) {
 
 </html>
 <script>
-  var nBulan = 2;
+var nBulan = 2;
 
-  function formatDate(date) {
-    var dd = String(date.getDate()).padStart(2, '0');
-    var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
-    var yyyy = date.getFullYear();
-    return yyyy + '-' + mm + '-' + dd;
+function formatDate(date) {
+  var dd = String(date.getDate()).padStart(2, '0');
+  var mm = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+  var yyyy = date.getFullYear();
+  return yyyy + '-' + mm + '-' + dd;
+}
+
+function setTanggal() {
+  var today = new Date();
+  var tgl_pinjam = formatDate(today); // 'YYYY-MM-DD'
+
+  if (document.getElementById('tgl_pinjam')) {
+    document.getElementById('tgl_pinjam').value = tgl_pinjam;
   }
 
-  function setTanggal() {
-    var today = new Date();
-    var tgl_pinjam = formatDate(today); // 'YYYY-MM-DD'
+  var nextDate = new Date(today);
+  nextDate.setMonth(nextDate.getMonth() + nBulan);
+  var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
 
-    if (document.getElementById('tgl_pinjam')) {
-      document.getElementById('tgl_pinjam').value = tgl_pinjam;
-    }
+  if (document.getElementById('tgl_kembali')) {
+    document.getElementById('tgl_kembali').value = tgl_kembali;
+  }
+}
 
-    var nextDate = new Date(today);
+setTimeout(setTanggal, 100);
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('tgl_pinjam').addEventListener('change', function() {
+    var selectedDate = new Date(this.value);
+    var nextDate = new Date(selectedDate);
     nextDate.setMonth(nextDate.getMonth() + nBulan);
     var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
 
     if (document.getElementById('tgl_kembali')) {
       document.getElementById('tgl_kembali').value = tgl_kembali;
     }
-  }
-
-  setTimeout(setTanggal, 100);
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('tgl_pinjam').addEventListener('change', function() {
-      var selectedDate = new Date(this.value);
-      var nextDate = new Date(selectedDate);
-      nextDate.setMonth(nextDate.getMonth() + nBulan);
-      var tgl_kembali = formatDate(nextDate); // 'YYYY-MM-DD'
-
-      if (document.getElementById('tgl_kembali')) {
-        document.getElementById('tgl_kembali').value = tgl_kembali;
-      }
-    });
   });
+});
 </script>

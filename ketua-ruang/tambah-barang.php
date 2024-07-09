@@ -28,6 +28,7 @@ if (isset($_POST['submit'])) {
       'jumlah_rusak' => $_POST['jumlah_rusak'],
     ];
     insert('keadaan_barang', $data2);
+    add_log('NULL', $_SESSION['id_pj'], "Menambahkan Barang " . $_POST['nama_barang']);
     header('location:daftar-barang.php');
     exit();
   }
@@ -46,7 +47,8 @@ if (isset($_POST['submit'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -106,23 +108,28 @@ if (isset($_POST['submit'])) {
                   <div class="card-body">
                     <div class="form-group">
                       <label for="nama_lab">Nama Lab</label>
-                      <input type="text" class="form-control" id="nama_lab" value="<?= $data_pj['nama_ruangbarang'] ?>" readonly>
+                      <input type="text" class="form-control" id="nama_lab" value="<?= $data_pj['nama_ruangbarang'] ?>"
+                        readonly>
                     </div>
                     <div class="form-group">
                       <label for="nama_barang">Nama Barang</label>
-                      <input type="text" name="nama_barang" class="form-control" id="nama_barang" placeholder="Nama Barang...">
+                      <input type="text" name="nama_barang" class="form-control" id="nama_barang"
+                        placeholder="Nama Barang...">
                     </div>
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
-                      <input type="number" name="stok_barang" class="form-control" id="stok_barang" placeholder="Stok Barang....">
+                      <input type="number" name="stok_barang" class="form-control" id="stok_barang"
+                        placeholder="Stok Barang....">
                     </div>
                     <div class="form-group">
                       <label for="stok_barang">Jumlah Baik</label>
-                      <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik" placeholder="Jumlah Barang Baik....">
+                      <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik"
+                        placeholder="Jumlah Barang Baik....">
                     </div>
                     <div class="form-group">
                       <label for="stok_barang">Jumlah Rusak</label>
-                      <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak" placeholder="Jumlah Barang Rusak....">
+                      <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak"
+                        placeholder="Jumlah Barang Rusak....">
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
@@ -133,7 +140,8 @@ if (isset($_POST['submit'])) {
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary"
+                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>
@@ -154,16 +162,16 @@ if (isset($_POST['submit'])) {
   <?php include('layouts/footer.php') ?>
 </body>
 <script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    var stokBarang = parseInt(document.getElementById('stok_barang').value);
-    var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
-    var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
+document.querySelector('form').addEventListener('submit', function(event) {
+  var stokBarang = parseInt(document.getElementById('stok_barang').value);
+  var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
+  var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
 
-    if (jumlahBaik + jumlahRusak != stokBarang) {
-      event.preventDefault(); // Mencegah pengiriman form
-      alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
-    }
-  });
+  if (jumlahBaik + jumlahRusak != stokBarang) {
+    event.preventDefault(); // Mencegah pengiriman form
+    alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
+  }
+});
 </script>
 
 </html>
