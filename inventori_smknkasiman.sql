@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2024 at 03:19 PM
+-- Generation Time: Jul 09, 2024 at 06:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,6 +34,13 @@ CREATE TABLE `admin` (
   `password_admin` char(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `nama_admin`, `username_admin`, `password_admin`) VALUES
+(1, 'admin 1', 'admin', 'admin123');
+
 -- --------------------------------------------------------
 
 --
@@ -48,6 +55,39 @@ CREATE TABLE `barang` (
   `status_barang` enum('Tetap','Pakai') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `barang`
+--
+
+INSERT INTO `barang` (`id_barang`, `id_ruangbarang`, `nama_barang`, `stok_barang`, `status_barang`) VALUES
+(4, 1, 'Keyboard', 5, 'Tetap'),
+(6, 1, 'Bom', 10, 'Pakai'),
+(7, 6, 'Kabel', 3, 'Tetap'),
+(8, 4, 'Komputer', 5, 'Pakai');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `keadaan_barang`
+--
+
+CREATE TABLE `keadaan_barang` (
+  `id_keadaanbarang` int(11) NOT NULL,
+  `id_barang` int(11) NOT NULL,
+  `jumlah_baik` int(11) NOT NULL,
+  `jumlah_rusak` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `keadaan_barang`
+--
+
+INSERT INTO `keadaan_barang` (`id_keadaanbarang`, `id_barang`, `jumlah_baik`, `jumlah_rusak`) VALUES
+(1, 4, 4, 1),
+(3, 6, 3, 7),
+(4, 7, 2, 1),
+(5, 8, 4, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -61,6 +101,17 @@ CREATE TABLE `log` (
   `waktu` datetime NOT NULL,
   `keterangan` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `log`
+--
+
+INSERT INTO `log` (`id_log`, `id_admin`, `id_pj`, `waktu`, `keterangan`) VALUES
+(1, 1, NULL, '2024-07-05 21:33:44', 'ADMIN Login'),
+(3, 1, NULL, '2024-07-05 21:36:18', 'ADMIN Login'),
+(4, 1, NULL, '2024-07-07 21:57:14', 'ADMIN Login'),
+(5, 1, NULL, '2024-07-07 21:58:37', 'ADMIN Logout'),
+(6, 1, NULL, '2024-07-07 21:58:50', 'ADMIN Login');
 
 -- --------------------------------------------------------
 
@@ -78,6 +129,16 @@ CREATE TABLE `peminjaman` (
   `status_peminjaman` enum('Pinjam','Kembali') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `peminjaman`
+--
+
+INSERT INTO `peminjaman` (`id_peminjaman`, `id_pj`, `id_user`, `id_barang`, `tanggal_pinjam`, `tanggal_kembali`, `status_peminjaman`) VALUES
+(4, 8, 1, 6, '2024-07-01', '2024-09-01', 'Kembali'),
+(5, 8, 2, 6, '2024-07-03', '2024-09-03', 'Kembali'),
+(6, 8, 1, 6, '2024-07-05', '2024-09-05', 'Pinjam'),
+(7, 11, 7, 8, '2024-07-05', '2024-09-05', 'Kembali');
+
 -- --------------------------------------------------------
 
 --
@@ -86,11 +147,20 @@ CREATE TABLE `peminjaman` (
 
 CREATE TABLE `pengembalian` (
   `id_pengembalian` int(11) NOT NULL,
+  `id_pj` int(11) NOT NULL,
   `id_peminjaman` int(11) NOT NULL,
   `tanggal_pinjam` date NOT NULL,
-  `tanggal_kembali` date NOT NULL,
-  `tanggal_serah` date NOT NULL
+  `tanggal_kembali` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pengembalian`
+--
+
+INSERT INTO `pengembalian` (`id_pengembalian`, `id_pj`, `id_peminjaman`, `tanggal_pinjam`, `tanggal_kembali`) VALUES
+(3, 8, 5, '2024-07-03', '2024-07-03'),
+(4, 8, 4, '2024-07-01', '2024-07-05'),
+(5, 11, 7, '2024-07-05', '2024-07-05');
 
 -- --------------------------------------------------------
 
@@ -114,13 +184,9 @@ CREATE TABLE `pj_ruang` (
 --
 
 INSERT INTO `pj_ruang` (`id_pj`, `nama_pj`, `jk_pj`, `telp_pj`, `alamat_pj`, `username_pj`, `password_pj`, `id_ruangbarang`) VALUES
-(1, 'pj 1', 'Laki-laki', '01231', 'Jalan a', 'pj1', 'pj1', 1),
-(2, 'pj 2', 'Laki-laki', '3123123', 'Jalan b', 'pj2', 'pj2', 2),
-(3, 'pj 3', 'Laki-laki', '123123', 'Jalan c', 'pj3', 'pj3', 3),
-(4, 'pj 4', 'Laki-laki', '2222', 'Jalan d', 'pj4', 'pj4', 4),
-(5, 'pj 5', 'Laki-laki', '3332', 'Jalan e', 'pj5', 'pj5', 5),
-(6, 'pj 6', 'Laki-laki', '4343', 'Jalan f', 'pj6', 'pj6', 6),
-(7, 'pj 7', 'Laki-laki', '1231111', 'Jalan g', 'pj7', 'pj7', 7);
+(8, 'Ketua 1', 'Laki-laki', '123123', 'asdhasdah', 'PJ2', 'PJ2', 1),
+(10, 'Ketua 2', 'Laki-laki', '113331', 'Jalan mana', 'ketua2', 'ketua2', 6),
+(11, 'Pj Baru', 'Perempuan', '1312313123', 'Mana Saja', 'PJ3', 'PJ3', 4);
 
 -- --------------------------------------------------------
 
@@ -170,9 +236,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `nama_user`, `ni_user`, `jk_user`, `telp_user`, `alamat_user`, `username_user`, `password_user`, `role_user`) VALUES
-(1, 'Galih User', '190411100177', 'Laki - laki', '081939301705', 'Jalan Bandeng NO 5 RT/RW 006/001 Kolor Kec. Kota Sumenep, Sumenep', '190411100177', '190411100177', 'Siswa'),
-(2, 'Galih Guru', '112233', 'Laki - laki', '081939301923', 'Jalan Mana Saja Yang Penting OKE', '112233', '112233', 'Guru'),
-(3, 'Galih Kepsek', '123', 'Perempuan', '123123123', 'Jalan Yogyakarta Sumenep OKE', '123', '123', 'Kepsek');
+(1, 'User', '111111', 'Perempuan', '0819393017', 'Jalan Bandeng NO 5 RT/RW 006/001 Kolor Kec. Kota Sumenep, Sumenep', '111111', '111111', 'Siswa'),
+(2, 'Guru', '112233', 'Laki - laki', '081939301923', 'Jalan Mana Saja Yang Penting OKE', '112233', '112233', 'Guru'),
+(3, 'Kepsek', '123', 'Laki - laki', '123123123', 'Jalan Yogyakarta Sumenep OKE', '123', '123', 'Kepsek'),
+(7, 'Alfi', '123321', 'Perempuan', '000000000', 'UTM', '123321', '123321', 'Siswa');
 
 --
 -- Indexes for dumped tables
@@ -189,6 +256,12 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `barang`
   ADD PRIMARY KEY (`id_barang`);
+
+--
+-- Indexes for table `keadaan_barang`
+--
+ALTER TABLE `keadaan_barang`
+  ADD PRIMARY KEY (`id_keadaanbarang`);
 
 --
 -- Indexes for table `log`
@@ -234,37 +307,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `keadaan_barang`
+--
+ALTER TABLE `keadaan_barang`
+  MODIFY `id_keadaanbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `pengembalian`
 --
 ALTER TABLE `pengembalian`
-  MODIFY `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pj_ruang`
 --
 ALTER TABLE `pj_ruang`
-  MODIFY `id_pj` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pj` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `ruang_barang`
@@ -276,7 +355,7 @@ ALTER TABLE `ruang_barang`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
