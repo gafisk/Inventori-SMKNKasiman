@@ -6,8 +6,21 @@ if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
   exit();
 }
 
-$datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang ON barang.id_ruangbarang = ruang_barang.id_ruangbarang");
+if (isset($_POST['submit'])) {
+  $ruangan = $_POST['ruangan'];
+  if (empty($ruangan)) {
+    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
+    echo "<script>window.location.href='laporan-barang.php';</script>";
+    exit();
+  } else {
+    $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang) WHERE barang.id_ruangbarang = '$ruangan'");
+  }
+} else {
+  $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang)");
+}
+// $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang ON barang.id_ruangbarang = ruang_barang.id_ruangbarang");
 
+$ruangan = mysqli_query($conn, "SELECT * FROM ruang_barang");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,6 +112,33 @@ $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USI
           <?php
             unset($_SESSION['gagal']);
           endif; ?>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Pilih Ruangan</h3>
+                </div>
+                <div class="card-body">
+                  <form action="" method="POST">
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Ruangan</label>
+                          <select name="ruangan" class="form-control select2bs4" style="width: 100%;">
+                            <option value="">Pilih Ruangan</option>
+                            <?php foreach ($ruangan as $r) : ?>
+                            <option value="<?= $r['id_ruangbarang'] ?>"><?= $r['nama_ruangbarang'] ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-primary">Pilih Keterangan</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-lg-12">
               <div class="card">
