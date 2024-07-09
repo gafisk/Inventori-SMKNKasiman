@@ -13,6 +13,8 @@ if (isset($_GET['hapus'])) {
   $condition = [
     'id_pj' => $id_hapus,
   ];
+  $temp_data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang WHERE id_pj = $id_hapus"));
+  add_log($_SESSION['id_admin'], 'NULL', "Menghapus " . $temp_data['nama_pj']);
   delete('pj_ruang', $condition);
   header('location: daftar-ketua.php');
   exit();
@@ -27,6 +29,8 @@ if (isset($_GET['resetpw'])) {
   $condition = [
     'id_pj' => $id_pj,
   ];
+  $temp_data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang WHERE id_pj = $id_pj"));
+  add_log($_SESSION['id_admin'], 'NULL', "Mereset Password " . $temp_data['nama_pj']);
   update('pj_ruang', $data, $condition);
   header('location: daftar-ketua.php');
   exit();
@@ -45,7 +49,8 @@ if (isset($_GET['resetpw'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -92,36 +97,36 @@ if (isset($_GET['resetpw'])) {
       <section class="content">
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['sukses']);
             unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['edit']);
             unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Gagal</strong><?= $_SESSION['msg'] ?>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Gagal</strong><?= $_SESSION['msg'] ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['gagal']);
             unset($_SESSION['msg']);
@@ -147,18 +152,21 @@ if (isset($_GET['resetpw'])) {
                     </thead>
                     <tbody>
                       <?php foreach ($datas as $data) : ?>
-                        <tr>
-                          <td><?= $data['nama_pj'] ?></td>
-                          <td><?= $data['jk_pj'] ?></td>
-                          <td><?= $data['telp_pj'] ?></td>
-                          <td><?= $data['alamat_pj'] ?></td>
-                          <td><?= $data['nama_ruangbarang'] ?></td>
-                          <td>
-                            <a href="edit-ketua.php?edit=<?= $data['id_pj'] ?>" class="btn btn-sm btn-warning"><i class="fas fa-pen-alt"></i></a>
-                            <a href="?hapus=<?= $data['id_pj'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Data Ini Akan di Hapus?')"><i class="fas fa-trash-alt"></i></a>
-                            <a href="?resetpw=<?= $data['id_pj'] ?>" class="btn btn-sm btn-primary" onclick="return confirm('Reset Password Akun ini?')"><i class="fas fa-undo"></i></a>
-                          </td>
-                        </tr>
+                      <tr>
+                        <td><?= $data['nama_pj'] ?></td>
+                        <td><?= $data['jk_pj'] ?></td>
+                        <td><?= $data['telp_pj'] ?></td>
+                        <td><?= $data['alamat_pj'] ?></td>
+                        <td><?= $data['nama_ruangbarang'] ?></td>
+                        <td>
+                          <a href="edit-ketua.php?edit=<?= $data['id_pj'] ?>" class="btn btn-sm btn-warning"><i
+                              class="fas fa-pen-alt"></i></a>
+                          <a href="?hapus=<?= $data['id_pj'] ?>" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Data Ini Akan di Hapus?')"><i class="fas fa-trash-alt"></i></a>
+                          <a href="?resetpw=<?= $data['id_pj'] ?>" class="btn btn-sm btn-primary"
+                            onclick="return confirm('Reset Password Akun ini?')"><i class="fas fa-undo"></i></a>
+                        </td>
+                      </tr>
                       <?php endforeach; ?>
                     </tbody>
                     <tfoot>
@@ -188,11 +196,11 @@ if (isset($_GET['resetpw'])) {
 
 </html>
 <script>
-  // Ambil elemen alert
-  var alert = document.getElementById('myAlert');
+// Ambil elemen alert
+var alert = document.getElementById('myAlert');
 
-  // Tutup alert setelah 3 detik
-  setTimeout(function() {
-    alert.style.display = 'none';
-  }, 10000);
+// Tutup alert setelah 3 detik
+setTimeout(function() {
+  alert.style.display = 'none';
+}, 10000);
 </script>

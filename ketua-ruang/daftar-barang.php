@@ -18,6 +18,7 @@ if (isset($_GET['hapus'])) {
     if ($del) {
       $_SESSION['sukses'] = true;
       $_SESSION['msg'] = 'Berhasil Menghapus Data';
+      add_log('NULL', $_SESSION['id_pj'], "Menghapus Data");
       header('location:daftar-barang.php');
       exit();
     } else {

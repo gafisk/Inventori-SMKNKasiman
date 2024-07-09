@@ -26,6 +26,7 @@ if (isset($_POST['submit'])) {
   if (!input_check($data)) {
     echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
   } else {
+    add_log($_SESSION['id_admin'], 'NULL', "Menambahkan Akun PJ Ruang " . $_POST['nama_pj']);
     insert('pj_ruang', $data);
     header('location:daftar-ketua.php');
     exit();

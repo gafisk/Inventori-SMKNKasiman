@@ -5,6 +5,15 @@ if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
   echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
   exit();
 }
+
+if (isset($_POST['submit'])) {
+  $tgl_awal = mysqli_escape_string($conn, $_POST['tanggal_awal']);
+  $tgl_akhir = mysqli_escape_string($conn, $_POST['tanggal_akhir']);
+  $datas = mysqli_query($conn, "SELECT log.*, IFNULL(admin.nama_admin, '-') AS nama_admin, IFNULL(pj_ruang.nama_pj, '-') AS nama_pj FROM `log` LEFT JOIN admin ON log.id_admin = admin.id_admin LEFT JOIN pj_ruang ON log.id_pj = pj_ruang.id_pj WHERE waktu BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+} else {
+  $datas = mysqli_query($conn, "SELECT log.*, IFNULL(admin.nama_admin, '-') AS nama_admin, IFNULL(pj_ruang.nama_pj, '-') AS nama_pj FROM `log` LEFT JOIN admin ON log.id_admin = admin.id_admin LEFT JOIN pj_ruang ON log.id_pj = pj_ruang.id_pj");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +112,7 @@ if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
                   <h3 class="card-title">Pilih Waktu</h3>
                 </div>
                 <div class="card-body">
-                  <form action="" method="GET">
+                  <form action="" method="POST">
                     <div class="row">
                       <div class="col">
                         <div class="form-group">
@@ -142,12 +151,14 @@ if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
                       </tr>
                     </thead>
                     <tbody>
+                      <?php foreach ($datas as $data) : ?>
                       <tr>
-                        <td></td>
-                        <td>Galih Ketua</td>
-                        <td>14-04-2024 12:00</td>
-                        <td>Menambahkan Peminjaman</td>
+                        <td><?= $data['nama_admin'] ?></td>
+                        <td><?= $data['nama_pj'] ?></td>
+                        <td><?= $data['waktu'] ?></td>
+                        <td><?= $data['keterangan'] ?></td>
                       </tr>
+                      <?php endforeach ?>
                     </tbody>
                     <tfoot>
                       <tr>

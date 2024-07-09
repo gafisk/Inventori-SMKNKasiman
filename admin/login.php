@@ -17,6 +17,7 @@ if (isset($_POST['submit'])) {
         $row = mysqli_fetch_assoc($query);
         $_SESSION['id_admin'] = $row['id_admin'];
         $_SESSION['nama_admin'] = $row['nama_admin'];
+        add_log($row['id_admin'], 'NULL', "ADMIN Login");
         echo '<script>alert("Anda Berhasil Login. Redirecting..."); window.location.href="index.php";</script>';
         exit();
       } else {
@@ -45,7 +46,8 @@ if (isset($_POST['submit'])) {
   <title>Login Inventori</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
@@ -64,12 +66,12 @@ if (isset($_POST['submit'])) {
       <div class="card-body">
         <p class="login-box-msg">Login Untuk Memulai Aplikasi</p>
         <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-            <strong>Gagal Login</strong> <?= $_SESSION['msg'] ?> .
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+        <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+          <strong>Gagal Login</strong> <?= $_SESSION['msg'] ?> .
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         <?php
           unset($_SESSION['gagal']);
           unset($_SESSION['msg']);

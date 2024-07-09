@@ -23,6 +23,7 @@ if (isset($_GET['edit'])) {
     if (!input_check($data)) {
       echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
     } else {
+      add_log($_SESSION['id_admin'], 'NULL', "Mengedit Informasi " . $datas['nama_user']);
       update('users', $data, $condition);
       header('location:daftar-pengguna.php');
       exit();
@@ -43,7 +44,8 @@ if (isset($_GET['edit'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -103,11 +105,13 @@ if (isset($_GET['edit'])) {
                   <div class="card-body">
                     <div class="form-group">
                       <label for="nama_user">Nama Pengguna</label>
-                      <input type="text" class="form-control" id="nama_user" name="nama_user" placeholder="Nama Pengguna..." value="<?= $datas['nama_user'] ?>">
+                      <input type="text" class="form-control" id="nama_user" name="nama_user"
+                        placeholder="Nama Pengguna..." value="<?= $datas['nama_user'] ?>">
                     </div>
                     <div class="form-group">
                       <label for="ni_user">Id Pengguna</label>
-                      <input type="text" name="ni_user" class="form-control" id="ni_user" placeholder="ID Pengguna..." value="<?= $datas['ni_user'] ?>" readonly>
+                      <input type="text" name="ni_user" class="form-control" id="ni_user" placeholder="ID Pengguna..."
+                        value="<?= $datas['ni_user'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label>Jenis Kelamin Pengguna</label>
@@ -120,11 +124,13 @@ if (isset($_GET['edit'])) {
                     </div>
                     <div class="form-group">
                       <label for="telp_user">No Telp Pengguna</label>
-                      <input type="text" name="telp_user" class="form-control" id="telp_user" placeholder="No Telp Pengguna..." value="<?= $datas['telp_user'] ?>">
+                      <input type="text" name="telp_user" class="form-control" id="telp_user"
+                        placeholder="No Telp Pengguna..." value="<?= $datas['telp_user'] ?>">
                     </div>
                     <div class="form-group">
                       <label for="alamat_user">Alamat Pengguna</label>
-                      <textarea class="form-control" name="alamat_user" id="alamat_user" rows="3"><?= $datas['alamat_user'] ?></textarea>
+                      <textarea class="form-control" name="alamat_user" id="alamat_user"
+                        rows="3"><?= $datas['alamat_user'] ?></textarea>
                     </div>
                     <div class="form-group">
                       <label>Status Pengguna</label>
@@ -138,7 +144,8 @@ if (isset($_GET['edit'])) {
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin mengedit data?')">Edit Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary"
+                        onclick="return confirm('Anda yakin ingin mengedit data?')">Edit Data</button>
                     </div>
                 </form>
               </div>

@@ -21,6 +21,7 @@ if (isset($_POST['submit'])) {
   if (!input_check($data)) {
     echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
   } else {
+    add_log($_SESSION['id_admin'], 'NULL', "Menambahkan Akun Users " . $_POST['nama_user']);
     insert('users', $data);
     header('location:daftar-pengguna.php');
     exit();
@@ -41,7 +42,8 @@ if (isset($_POST['submit'])) {
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -101,7 +103,8 @@ if (isset($_POST['submit'])) {
                   <div class="card-body">
                     <div class="form-group">
                       <label for="nama_user">Nama Pengguna</label>
-                      <input type="text" class="form-control" id="nama_user" name="nama_user" placeholder="Nama Pengguna...">
+                      <input type="text" class="form-control" id="nama_user" name="nama_user"
+                        placeholder="Nama Pengguna...">
                     </div>
                     <div class="form-group">
                       <label for="ni_user">Id Pengguna</label>
@@ -116,7 +119,8 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="form-group">
                       <label for="telp_user">No Telp Pengguna</label>
-                      <input type="text" name="telp_user" class="form-control" id="telp_user" placeholder="No Telp Pengguna...">
+                      <input type="text" name="telp_user" class="form-control" id="telp_user"
+                        placeholder="No Telp Pengguna...">
                     </div>
                     <div class="form-group">
                       <label for="alamat_user">Alamat Pengguna</label>
@@ -133,7 +137,8 @@ if (isset($_POST['submit'])) {
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" name="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
+                      <button type="submit" name="submit" class="btn btn-primary"
+                        onclick="return confirm('Anda yakin ingin menyimpan data?')">Simpan Data</button>
                     </div>
                 </form>
               </div>

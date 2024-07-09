@@ -13,6 +13,8 @@ if (isset($_GET['hapus'])) {
   $condition = [
     'id_user' => $id_hapus,
   ];
+  $temp_data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id_user = $id_hapus"));
+  add_log($_SESSION['id_admin'], 'NULL', "Menghapus " . $temp_data['nama_user']);
   delete('users', $condition);
   header('location: daftar-pengguna.php');
   exit();
@@ -28,6 +30,7 @@ if (isset($_GET['resetpw'])) {
   $condition = [
     'id_user' => $id_user,
   ];
+  add_log($_SESSION['id_admin'], 'NULL', "Mereset Password " . $datas['nama_user']);
   update('users', $data, $condition);
   header('location: daftar-pengguna.php');
   exit();

@@ -29,6 +29,7 @@ if (isset($_GET['edit'])) {
     if (!input_check($data)) {
       echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
     } else {
+      add_log($_SESSION['id_admin'], 'NULL', "Mengedit Informasi " . $datas['nama_pj']);
       update('pj_ruang', $data, $condition);
       header('location:daftar-ketua.php');
       exit();
