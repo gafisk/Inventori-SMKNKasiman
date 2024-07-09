@@ -27,6 +27,7 @@ if (isset($_GET['edit'])) {
         if ($update_keadaan) {
           $_SESSION['sukses'] = true;
           $_SESSION['msg'] = "Data Berhasil Diperbaharui";
+          add_log('NULL', $_SESSION['id_pj'], "Mengedit Barang " . $id_barang);
           header('location:daftar-barang.php');
           exit();
         } else {

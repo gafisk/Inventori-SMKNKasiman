@@ -24,7 +24,8 @@ $data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -71,36 +72,36 @@ $data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali
       <section class="content">
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['sukses']);
             unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> <?= $_SESSION['msg'] ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['edit']);
             unset($_SESSION['msg']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Gagal</strong> <?= $_SESSION['msg'] ?>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Gagal</strong> <?= $_SESSION['msg'] ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['gag  al']);
             unset($_SESSION['msg']);
@@ -127,17 +128,19 @@ $data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali
                     </thead>
                     <tbody>
                       <?php foreach ($data_pengembalian as $dp) : ?>
-                        <tr>
-                          <td><?= $dp['ni_user'] ?></td>
-                          <td><?= $dp['nama_user'] ?></td>
-                          <td><?= $dp['nama_barang'] ?></td>
-                          <td><?= $dp['tanggal_pinjam'] ?></td>
-                          <td><?= $dp['tanggal_kembali'] ?></td>
-                          <td><?= $dp['tgl_serah'] ?></td>
-                          <td>
-                            <a href="?hapus=<?= $dp['id_pengembalian'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')"><i class="fas fa-trash-alt"></i></a>
-                          </td>
-                        </tr>
+                      <tr>
+                        <td><?= $dp['ni_user'] ?></td>
+                        <td><?= $dp['nama_user'] ?></td>
+                        <td><?= $dp['nama_barang'] ?></td>
+                        <td><?= $dp['tanggal_pinjam'] ?></td>
+                        <td><?= $dp['tanggal_kembali'] ?></td>
+                        <td><?= $dp['tgl_serah'] ?></td>
+                        <td>
+                          <a href="?hapus=<?= $dp['id_pengembalian'] ?>" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Yakin akan menghapus data ini?')"><i
+                              class="fas fa-trash-alt"></i></a>
+                        </td>
+                      </tr>
                       <?php endforeach; ?>
                     </tbody>
                     <tfoot>
@@ -168,11 +171,11 @@ $data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali
 
 </html>
 <script>
-  // Ambil elemen alert
-  var alert = document.getElementById('myAlert');
+// Ambil elemen alert
+var alert = document.getElementById('myAlert');
 
-  // Tutup alert setelah 3 detik
-  setTimeout(function() {
-    alert.style.display = 'none';
-  }, 10000);
+// Tutup alert setelah 3 detik
+setTimeout(function() {
+  alert.style.display = 'none';
+}, 10000);
 </script>

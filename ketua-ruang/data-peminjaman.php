@@ -24,7 +24,7 @@ if (isset($_GET['kembali'])) {
       if ($add_pengembalian) {
         $_SESSION['sukses'] = true;
         $_SESSION['msg'] = "Berhasil Mengembalikan Barang";
-
+        add_log('NULL', $_SESSION['id_pj'], $id_peminjaman . " Dikemebalikan");
         header('location: data-peminjaman.php');
         exit();
       }
