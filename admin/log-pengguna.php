@@ -9,9 +9,9 @@ if (!isset($_SESSION['id_admin']) || empty($_SESSION['id_admin'])) {
 if (isset($_POST['submit'])) {
   $tgl_awal = mysqli_escape_string($conn, $_POST['tanggal_awal']);
   $tgl_akhir = mysqli_escape_string($conn, $_POST['tanggal_akhir']);
-  $datas = mysqli_query($conn, "SELECT log.*, IFNULL(admin.nama_admin, '-') AS nama_admin, IFNULL(pj_ruang.nama_pj, '-') AS nama_pj FROM `log` LEFT JOIN admin ON log.id_admin = admin.id_admin LEFT JOIN pj_ruang ON log.id_pj = pj_ruang.id_pj WHERE waktu BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+  $datas = mysqli_query($conn, "SELECT log.*, IFNULL(admin.nama_admin, '-') AS nama_admin, IFNULL(pj_ruang.nama_pj, '-') AS nama_pj FROM `log` LEFT JOIN admin ON log.id_admin = admin.id_admin LEFT JOIN pj_ruang ON log.id_pj = pj_ruang.id_pj WHERE waktu BETWEEN '$tgl_awal' AND '$tgl_akhir' ORDER BY log.id_log DESC");
 } else {
-  $datas = mysqli_query($conn, "SELECT log.*, IFNULL(admin.nama_admin, '-') AS nama_admin, IFNULL(pj_ruang.nama_pj, '-') AS nama_pj FROM `log` LEFT JOIN admin ON log.id_admin = admin.id_admin LEFT JOIN pj_ruang ON log.id_pj = pj_ruang.id_pj");
+  $datas = mysqli_query($conn, "SELECT log.*, IFNULL(admin.nama_admin, '-') AS nama_admin, IFNULL(pj_ruang.nama_pj, '-') AS nama_pj FROM `log` LEFT JOIN admin ON log.id_admin = admin.id_admin LEFT JOIN pj_ruang ON log.id_pj = pj_ruang.id_pj ORDER BY log.id_log DESC");
 }
 
 ?>
