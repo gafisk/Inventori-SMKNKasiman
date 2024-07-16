@@ -2,7 +2,7 @@
 session_start();
 include('../config/config.php');
 if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
-  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="login.php";</script>';
+  echo '<script>alert("Silahkan Login Dahulu"); window.location.href="../login.php";</script>';
   exit();
 }
 $id_pj = $_SESSION['id_pj'];
