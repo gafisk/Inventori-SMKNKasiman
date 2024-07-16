@@ -5,44 +5,88 @@ include('config/config.php');
 if (isset($_POST['submit'])) {
   $username = mysqli_real_escape_string($conn, $_POST['username']);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
-
-  if (empty($username) || empty($password)) {
+  $status = mysqli_real_escape_string($conn, $_POST['status']);
+  if (empty($username) || empty($password) || empty($status)) {
     $_SESSION['gagal'] = true;
-    $_SESSION['msg'] = "Username atau Password tidak boleh kosong";
+    $_SESSION['msg'] = "Identitas Login Tidak Boleh Kosong!!";
     header('location:login.php');
     exit();
   } else {
-    $check_users = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username'");
-    if (mysqli_num_rows($check_users) > 0) {
-      $query = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username' AND password_user = '$password'");
-      if (mysqli_num_rows($query) > 0) {
-        $row = mysqli_fetch_assoc($query);
-        session_regenerate_id(true); // Regenerasi ID sesi
-        $_SESSION['id_user'] = $row['id_user'];
-        $_SESSION['nama_user'] = $row['nama_user'];
-        $_SESSION['ni_user'] = $row['ni_user'];
-        $_SESSION['role_user'] = $row['role_user'];
-        if ($row['role_user'] == 'Guru' || $row['role_user'] == 'Siswa') {
-          echo '<script>alert("Anda berhasil login. Redirecting..."); window.location.href="users/";</script>';
-          add_log('NULL', 'NULL', $_SESSION['nama_user'] . " User Berusaha Login");
+    if($status == 'Admin'){
+      $check_users = mysqli_query($conn, "SELECT * FROM admin WHERE username_admin = '$username'");
+      if (mysqli_num_rows($check_users) > 0) {
+        $query = mysqli_query($conn, "SELECT * FROM admin WHERE username_admin = '$username' AND password_admin = '$password'");
+        if (mysqli_num_rows($query) > 0) {
+          $row = mysqli_fetch_assoc($query);
+          $_SESSION['id_admin'] = $row['id_admin'];
+          $_SESSION['nama_admin'] = $row['nama_admin'];
+          add_log($row['id_admin'], 'NULL', "ADMIN Login");
+          echo '<script>alert("Anda Berhasil Login. Redirecting..."); window.location.href="admin/";</script>';
           exit();
         } else {
-          add_log('NULL', 'NULL', "Kepala Sekolah Login");
-          echo '<script>alert("Anda berhasil login. Redirecting..."); window.location.href="kepala-sekolah/";</script>';
+          $_SESSION['gagal'] = true;
+          $_SESSION['msg'] = "Password Salah";
+          header('location:login.php');
           exit();
         }
       } else {
         $_SESSION['gagal'] = true;
-        $_SESSION['msg'] = "Password salah";
+        $_SESSION['msg'] = "Tidak ada akun";
         header('location:login.php');
         exit();
       }
-    } else {
-      $_SESSION['gagal'] = true;
-      $_SESSION['msg'] = "Akunmu belum terdaftar";
-      header('location:login.php');
-      exit();
+    }else if($status == 'Kepsek'){
+      $check_users = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username'");
+      if (mysqli_num_rows($check_users) > 0) {
+        $query = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username' AND password_user = '$password' AND role_user = '$status'");
+        if (mysqli_num_rows($query) > 0) {
+          $row = mysqli_fetch_assoc($query);
+          session_regenerate_id(true);
+          $_SESSION['id_user'] = $row['id_user'];
+          $_SESSION['nama_user'] = $row['nama_user'];
+          $_SESSION['ni_user'] = $row['ni_user'];
+          $_SESSION['role_user'] = $row['role_user'];
+          add_log('NULL', 'NULL', "Kepala Sekolah Login");
+          echo '<script>alert("Anda berhasil login. Redirecting..."); window.location.href="kepala-sekolah/";</script>';
+          exit();
+        }else{
+          $_SESSION['gagal'] = true;
+          $_SESSION['msg'] = "Password salah";
+          header('location:login.php');
+          exit();
+        }
+      }else{
+        $_SESSION['gagal'] = true;
+        $_SESSION['msg'] = "Akunmu belum terdaftar";
+        header('location:login.php');
+        exit();
+      }
+    }else{
+      $check_users = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username'");
+      if (mysqli_num_rows($check_users) > 0) {
+        $query = mysqli_query($conn, "SELECT * FROM pj_ruang WHERE username_pj = '$username' AND password_pj = '$password'");
+      if (mysqli_num_rows($query) > 0) {
+        $row = mysqli_fetch_assoc($query);
+        $_SESSION['id_pj'] = $row['id_pj'];
+        $_SESSION['nama_pj'] = $row['nama_pj'];
+        $_SESSION['id_ruangbarang'] = $row['id_ruangbarang'];
+        add_log('NULL', $_SESSION['id_pj'], "Ketua Ruang Login");
+        echo '<script>alert("Anda Berhasil Login. Redirecting..."); window.location.href="ketua-ruang/";</script>';
+        exit();
+      } else {
+        $_SESSION['gagal'] = true;
+        $_SESSION['msg'] = "Password Salah";
+        header('location:login.php');
+        exit();
+      }
+      }else{
+        $_SESSION['gagal'] = true;
+        $_SESSION['msg'] = "Akunmu belum terdaftar";
+        header('location:login.php');
+        exit();
+      }
     }
+    
   }
 }
 ?>
@@ -105,7 +149,12 @@ if (isset($_POST['submit'])) {
             </div>
           </div>
           <div class="input-group mb-3">
-            <a href="ketua-ruang/login.php" class="text-center">Anda Ketua Ruangan? Login disini</a>
+            <select name="status" id="status" class="form-control">
+              <option value="">--- Pilih Jenis ---</option>
+              <option value="Admin">Admin</option>
+              <option value="Kepsek">Kepala Sekolah</option>
+              <option value="Ketua">Ketua Ruangan</option>
+            </select>
           </div>
           <!-- /.col -->
           <div class="col-12">
