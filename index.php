@@ -57,8 +57,8 @@ WHERE users.ni_user = '$id'");
       <div class="collapse navbar-collapse justify-content-between px-lg-6" id="navbarCollapse">
         <div class="navbar-nav m-auto py-0">
           <a href="#" class="nav-item nav-link active">Home</a>
-          <a href="#" class="nav-item nav-link">Cek Peminjaman</a>
-          <a href="#" class="nav-item nav-link">Contact</a>
+          <a href="#peminjaman" class="nav-item nav-link">Cek Peminjaman</a>
+          <a href="#footer" class="nav-item nav-link">Contact</a>
         </div>
       </div>
     </nav>
@@ -87,7 +87,7 @@ WHERE users.ni_user = '$id'");
   <!-- Header End -->
 
   <!-- Team Start -->
-  <div class="container-fluid pt-5">
+  <div class="container-fluid pt-5" id="peminjaman">
     <div class="container">
       <div class="text-center pb-2">
         <h1 class="mb-4">Cek Peminjaman</h1>
@@ -139,7 +139,7 @@ WHERE users.ni_user = '$id'");
   <!-- Team End -->
 
   <!-- Footer Start -->
-  <div class="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5">
+  <div class="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5" id="footer">
     <div class="row pt-5">
       <div class="col-lg-7 col-md-12">
         <div class="row">
