@@ -15,10 +15,12 @@ if (isset($_POST['submit'])) {
   } else {
     $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang) WHERE barang.id_ruangbarang = '$ruangan'");
   }
-} else {
+} else if(isset($_GET['id_rb'])) {
+  $ruangan = mysqli_real_escape_string($conn, $_GET['id_rb']);
+  $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang) WHERE barang.id_ruangbarang = '$ruangan'");
+} else{
   $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang)");
 }
-// $datas = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang ON barang.id_ruangbarang = ruang_barang.id_ruangbarang");
 
 $ruangan = mysqli_query($conn, "SELECT * FROM ruang_barang");
 ?>

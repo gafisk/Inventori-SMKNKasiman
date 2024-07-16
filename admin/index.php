@@ -118,7 +118,7 @@ $lab7 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT IFNULL(COUNT(*), 0) AS to
                 <div class="icon">
                   <i class="fas fa-network-wired"></i>
                 </div>
-                <a href="laporan-barang.php" class="small-box-footer">More info <i
+                <a href="laporan-barang.php?id_rb=1" class="small-box-footer">More info <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
@@ -134,7 +134,7 @@ $lab7 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT IFNULL(COUNT(*), 0) AS to
                 <div class="icon">
                   <i class="fas fa-palette"></i>
                 </div>
-                <a href="laporan-barang.php" class="small-box-footer">More info <i
+                <a href="laporan-barang.php?id_rb=2" class="small-box-footer">More info <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
@@ -150,7 +150,7 @@ $lab7 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT IFNULL(COUNT(*), 0) AS to
                 <div class="icon">
                   <i class="fas fa-calculator"></i>
                 </div>
-                <a href="laporan-barang.php" class="small-box-footer">More info <i
+                <a href="laporan-barang.php?id_rb=3" class="small-box-footer">More info <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
@@ -165,7 +165,7 @@ $lab7 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT IFNULL(COUNT(*), 0) AS to
                 <div class="icon">
                   <i class="fas fa-laptop"></i>
                 </div>
-                <a href="laporan-barang.php" class="small-box-footer">More info <i
+                <a href="laporan-barang.php?id_rb=4" class="small-box-footer">More info <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
@@ -182,7 +182,7 @@ $lab7 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT IFNULL(COUNT(*), 0) AS to
                 <div class="icon">
                   <i class="fas fa-car"></i>
                 </div>
-                <a href="laporan-barang.php" class="small-box-footer">More info <i
+                <a href="laporan-barang.php?id_rb=5" class="small-box-footer">More info <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
@@ -198,7 +198,7 @@ $lab7 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT IFNULL(COUNT(*), 0) AS to
                 <div class="icon">
                   <i class="fas fa-robot"></i>
                 </div>
-                <a href="laporan-barang.php" class="small-box-footer">More info <i
+                <a href="laporan-barang.php?id_rb=6" class="small-box-footer">More info <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
@@ -214,7 +214,7 @@ $lab7 = mysqli_fetch_assoc(mysqli_query($conn, "SELECT IFNULL(COUNT(*), 0) AS to
                 <div class="icon">
                   <i class="fas fa-fire"></i>
                 </div>
-                <a href="laporan-barang.php" class="small-box-footer">More info <i
+                <a href="laporan-barang.php?id_rb=7" class="small-box-footer">More info <i
                     class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
