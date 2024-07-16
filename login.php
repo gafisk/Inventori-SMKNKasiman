@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
         exit();
       }
     }else{
-      $check_users = mysqli_query($conn, "SELECT * FROM users WHERE username_user = '$username'");
+      $check_users = mysqli_query($conn, "SELECT * FROM pj_ruang WHERE username_pj = '$username'");
       if (mysqli_num_rows($check_users) > 0) {
         $query = mysqli_query($conn, "SELECT * FROM pj_ruang WHERE username_pj = '$username' AND password_pj = '$password'");
       if (mysqli_num_rows($query) > 0) {
