@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('../config/config.php');
-if (!isset($_SESSION['role_user']) && $_SESSION['role_user'] == 'Guru' || !isset($_SESSION['role_user']) && $_SESSION['role_user'] == 'Siswa') {
+if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user'])) {
   echo '<script>alert("Silahkan Login Dahulu"); window.location.href="../login.php";</script>';
   exit();
 }
@@ -15,7 +15,10 @@ if (isset($_POST['submit'])) {
   } else {
     $data_barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang) WHERE barang.id_ruangbarang = '$ruangan'");
   }
-} else {
+} else if(isset($_GET['id_rb'])) {
+  $ruangan = mysqli_real_escape_string($conn, $_GET['id_rb']);
+  $data_barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang) WHERE barang.id_ruangbarang = '$ruangan'");
+}else{
   $data_barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_barang USING(id_barang) INNER JOIN ruang_barang USING(id_ruangbarang)");
 }
 
@@ -32,7 +35,8 @@ $ruangan = mysqli_query($conn, "SELECT * FROM ruang_barang");
   <div class="wrapper">
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+      <img class="animation__shake" src="../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+        width="60" />
     </div>
 
     <!-- Navbar -->
@@ -79,34 +83,34 @@ $ruangan = mysqli_query($conn, "SELECT * FROM ruang_barang");
       <section class="content">
         <div class="container-fluid">
           <?php if (isset($_SESSION['sukses']) && $_SESSION['sukses']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Simpan.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> Data Berhasil di Simpan.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['sukses']);
           endif; ?>
 
           <?php if (isset($_SESSION['edit']) && $_SESSION['edit']) : ?>
-            <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Sukses</strong> Data Berhasil di Edit.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Sukses</strong> Data Berhasil di Edit.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['edit']);
           endif; ?>
 
           <?php if (isset($_SESSION['gagal']) && $_SESSION['gagal']) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
-              <strong>Gagal</strong> Data Gagal di Simpan.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+          <div class="alert alert-danger alert-dismissible fade show" id="myAlert" role="alert">
+            <strong>Gagal</strong> Data Gagal di Simpan.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <?php
             unset($_SESSION['gagal']);
           endif; ?>
@@ -125,7 +129,7 @@ $ruangan = mysqli_query($conn, "SELECT * FROM ruang_barang");
                           <select name="ruangan" class="form-control select2bs4" style="width: 100%;">
                             <option value="">Pilih Ruangan</option>
                             <?php foreach ($ruangan as $r) : ?>
-                              <option value="<?= $r['id_ruangbarang'] ?>"><?= $r['nama_ruangbarang'] ?></option>
+                            <option value="<?= $r['id_ruangbarang'] ?>"><?= $r['nama_ruangbarang'] ?></option>
                             <?php endforeach; ?>
                           </select>
                         </div>
@@ -158,14 +162,14 @@ $ruangan = mysqli_query($conn, "SELECT * FROM ruang_barang");
                     </thead>
                     <tbody>
                       <?php foreach ($data_barang as $db) : ?>
-                        <tr>
-                          <td><?= $db['nama_barang'] ?></td>
-                          <td><?= $db['stok_barang'] ?></td>
-                          <td><?= $db['jumlah_baik'] ?></td>
-                          <td><?= $db['jumlah_rusak'] ?></td>
-                          <td><?= $db['status_barang'] ?></td>
-                          <td><?= $db['nama_ruangbarang'] ?></td>
-                        </tr>
+                      <tr>
+                        <td><?= $db['nama_barang'] ?></td>
+                        <td><?= $db['stok_barang'] ?></td>
+                        <td><?= $db['jumlah_baik'] ?></td>
+                        <td><?= $db['jumlah_rusak'] ?></td>
+                        <td><?= $db['status_barang'] ?></td>
+                        <td><?= $db['nama_ruangbarang'] ?></td>
+                      </tr>
                       <?php endforeach; ?>
                     </tbody>
                     <tfoot>
@@ -195,11 +199,11 @@ $ruangan = mysqli_query($conn, "SELECT * FROM ruang_barang");
 
 </html>
 <script>
-  // Ambil elemen alert
-  var alert = document.getElementById('myAlert');
+// Ambil elemen alert
+var alert = document.getElementById('myAlert');
 
-  // Tutup alert setelah 3 detik
-  setTimeout(function() {
-    alert.style.display = 'none';
-  }, 10000);
+// Tutup alert setelah 3 detik
+setTimeout(function() {
+  alert.style.display = 'none';
+}, 10000);
 </script>
