@@ -11,7 +11,7 @@ if (isset($_POST['submit'])) {
   $tgl_awal = $_POST['tanggal_awal'];
   $tgl_akhir = $_POST['tanggal_akhir'];
   if (empty($tgl_awal) || empty($tgl_akhir)) {
-    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
+    echo "<script>alert('Kolom Inputan Data Tidak Boleh Kosong!');</script>";
     echo "<script>window.location.href='laporan-transaksi.php';</script>";
     exit();
   } else {

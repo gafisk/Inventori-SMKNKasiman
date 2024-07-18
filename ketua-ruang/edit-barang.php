@@ -131,7 +131,7 @@ if (isset($_GET['edit'])) {
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
                       <input type="number" name="stok_barang" class="form-control" id="stok_barang"
-                        placeholder="Tahun Terbit Buku" value="<?= $data_barang['stok_barang'] ?>">
+                        placeholder="Stock Barang..." value="<?= $data_barang['stok_barang'] ?>">
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>

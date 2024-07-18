@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_user']) || empty($_SESSION['id_user'])) {
 if (isset($_POST['submit'])) {
   $ruangan = $_POST['ruangan'];
   if (empty($ruangan)) {
-    echo "<script>alert('Kolom Inputan Data Buku Tidak Boleh Kosong!');</script>";
+    echo "<script>alert('Kolom Inputan Data Tidak Boleh Kosong!');</script>";
     echo "<script>window.location.href='laporan-barang.php';</script>";
     exit();
   } else {
