@@ -19,26 +19,57 @@ if (isset($_POST['submit'])) {
   if (empty($id_user) || empty($id_barang) || empty($tanggal_kembali)) {
     echo "<script>alert('Kolom Inputan Data Tidak Boleh Kosong!');</script>";
   } else {
-    $query = mysqli_query($conn, "INSERT INTO peminjaman VALUES(NULL, '$id_pj', '$id_user', '$id_barang', NOW(), '$tanggal_kembali', '$status_peminjaman')");
-    if ($query) {
-      $update_stok = mysqli_query($conn, "UPDATE barang SET stok_barang = stok_barang - 1 WHERE id_barang = '$id_barang'");
-      if ($update_stok) {
-        $_SESSION['sukses'] = true;
-        $_SESSION['msg'] = 'Berhasil Menambahkan Peminjaman';
-        add_log('NULL', $_SESSION['id_pj'], "Menambahkan Peminjaman ". $id_user);
-        header('location:data-peminjaman.php');
-        exit();
+    $temp_status_barang = mysqli_fetch_assoc(mysqli_query($conn, "SELECT status_barang FROM barang WHERE id_barang = '$id_barang'"));
+    if($temp_status_barang['status_barang'] == 'Tetap'){
+      $query = mysqli_query($conn, "INSERT INTO peminjaman VALUES(NULL, '$id_pj', '$id_user', '$id_barang', NOW(), '$tanggal_kembali', '$status_peminjaman')");
+      if ($query) {
+        $update_stok = mysqli_query($conn, "UPDATE barang SET stok_barang = stok_barang - 1 WHERE id_barang = '$id_barang'");
+        if ($update_stok) {
+          $_SESSION['sukses'] = true;
+          $_SESSION['msg'] = 'Berhasil Menambahkan Peminjaman';
+          add_log('NULL', $_SESSION['id_pj'], "Menambahkan Peminjaman ". $id_user);
+          header('location:data-peminjaman.php');
+          exit();
+        } else {
+          $_SESSION['gagal'] = true;
+          $_SESSION['msg'] = 'Gagal Menambahkan Data';
+          header('location:data-peminjaman.php');
+          exit();
+        }
       } else {
         $_SESSION['gagal'] = true;
-        $_SESSION['msg'] = 'Gagal Menambahkan Data';
+        $_SESSION['msg'] = 'Gagal Menambahkan Peminjaman';
         header('location:data-peminjaman.php');
         exit();
       }
-    } else {
-      $_SESSION['gagal'] = true;
-      $_SESSION['msg'] = 'Gagal Menambahkan Peminjaman';
-      header('location:data-peminjaman.php');
-      exit();
+    }else{
+      $jumlah_barang_baik = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM keadaan_barang WHERE id_barang = '$id_barang'"));
+      if($jumlah_barang_baik['jumlah_baik'] > 0){
+        $query = mysqli_query($conn, "INSERT INTO peminjaman VALUES(NULL, '$id_pj', '$id_user', '$id_barang', NOW(), '$tanggal_kembali', '$status_peminjaman')");
+        if ($query) {
+          $update_stok1 = mysqli_query($conn, "UPDATE barang SET stok_barang = stok_barang - 1 WHERE id_barang = '$id_barang'");
+          $update_stok2 = mysqli_query($conn, "UPDATE keadaan_barang SET jumlah_baik = jumlah_baik - 1 WHERE id_barang = '$id_barang'");
+          if ($update_stok1 and $update_stok2) {
+            $_SESSION['sukses'] = true;
+            $_SESSION['msg'] = 'Berhasil Menambahkan Peminjaman';
+            add_log('NULL', $_SESSION['id_pj'], "Menambahkan Peminjaman ". $id_user);
+            header('location:data-peminjaman.php');
+            exit();
+          } else {
+            $_SESSION['gagal'] = true;
+            $_SESSION['msg'] = 'Gagal Menambahkan Data';
+            header('location:data-peminjaman.php');
+            exit();
+          }
+        } else {
+          $_SESSION['gagal'] = true;
+          $_SESSION['msg'] = 'Gagal Menambahkan Peminjaman';
+          header('location:data-peminjaman.php');
+          exit();
+        }
+      }else{
+        echo "<script>alert('Peminjaman tidak dapat dilakukan karena stok barang baik tidak ada!');</script>";
+      }
     }
   }
 }

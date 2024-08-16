@@ -16,8 +16,23 @@ if (isset($_GET['kembali'])) {
   $data_pinjam = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM peminjaman WHERE id_peminjaman = '$id_peminjaman'"));
   $b_tgl_pinjam = $data_pinjam['tanggal_pinjam'];
   $id_barang = $data_pinjam['id_barang'];
-  $update_stok = mysqli_query($conn, "UPDATE barang SET stok_barang = stok_barang + 1 WHERE id_barang = '$id_barang'");
-  if ($update_stok) {
+  $temp_status_barang = mysqli_fetch_assoc(mysqli_query($conn, "SELECT status_barang FROM barang WHERE id_barang = '$id_barang'"));
+  if ($temp_status_barang['status_barang'] == 'Tetap') {
+    $update_stok = mysqli_query($conn, "UPDATE barang SET stok_barang = stok_barang + 1 WHERE id_barang = '$id_barang'");
+    if ($update_stok) {
+      $update_peminjaman = mysqli_query($conn, "UPDATE peminjaman SET status_peminjaman = 'Kembali' WHERE id_peminjaman = '$id_peminjaman'");
+      if ($update_peminjaman) {
+        $add_pengembalian = mysqli_query($conn, "INSERT INTO pengembalian (id_peminjaman, id_pj, tanggal_pinjam, tanggal_kembali) VALUES ('$id_peminjaman', '$id_pj', '$b_tgl_pinjam', NOW())");
+        if ($add_pengembalian) {
+          $_SESSION['sukses'] = true;
+          $_SESSION['msg'] = "Berhasil Mengembalikan Barang";
+          add_log('NULL', $_SESSION['id_pj'], $id_peminjaman . " Dikemebalikan");
+          header('location: data-peminjaman.php');
+          exit();
+        }
+      }
+    }
+  } else {
     $update_peminjaman = mysqli_query($conn, "UPDATE peminjaman SET status_peminjaman = 'Kembali' WHERE id_peminjaman = '$id_peminjaman'");
     if ($update_peminjaman) {
       $add_pengembalian = mysqli_query($conn, "INSERT INTO pengembalian (id_peminjaman, id_pj, tanggal_pinjam, tanggal_kembali) VALUES ('$id_peminjaman', '$id_pj', '$b_tgl_pinjam', NOW())");

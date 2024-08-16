@@ -9,7 +9,17 @@ $id_pj = $_SESSION['id_pj'];
 
 $data_pengembalian = mysqli_query($conn, "SELECT *, pengembalian.tanggal_kembali as tgl_serah FROM pengembalian INNER JOIN peminjaman ON pengembalian.id_peminjaman = peminjaman.id_peminjaman INNER JOIN barang ON peminjaman.id_barang = barang.id_barang INNER JOIN users ON peminjaman.id_user = users.id_user WHERE pengembalian.id_pj = '$id_pj'");
 
-
+if (isset($_GET['hapus'])) {
+  $id_hapus = mysqli_escape_string($conn, $_GET['hapus']);
+  $condition = [
+    'id_pengembalian' => $id_hapus,
+  ];
+  $temp_data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang WHERE id_pj = $id_hapus"));
+  add_log($_SESSION['id_admin'], 'NULL', "Menghapus " . $temp_data['nama_pj']);
+  delete('pengembalian', $condition);
+  header('location: daftar-pengembalian.php');
+  exit();
+}
 
 ?>
 
