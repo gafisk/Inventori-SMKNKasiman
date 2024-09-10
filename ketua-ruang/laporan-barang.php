@@ -113,8 +113,8 @@ $data_barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_bara
                       <tr>
                         <th>Nama Barang</th>
                         <th>Stok Barang</th>
-                        <th>Barang Rusak</th>
                         <th>Barang Baik</th>
+                        <th>Barang Rusak</th>
                         <th>Status Barang</th>
                       </tr>
                     </thead>
@@ -123,8 +123,8 @@ $data_barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_bara
                       <tr>
                         <td><?= $barang['nama_barang'] ?></td>
                         <td><?= $barang['stok_barang'] ?></td>
-                        <td><?= $barang['jumlah_rusak'] ?></td>
                         <td><?= $barang['jumlah_baik'] ?></td>
+                        <td><?= $barang['jumlah_rusak'] ?></td>
                         <td><?= ($barang['status_barang'] == 'Pakai') ? 'Barang Habis Pakai' : 'Barang Tetap' ?></td>
                       </tr>
                       <?php endforeach; ?>
@@ -133,8 +133,8 @@ $data_barang = mysqli_query($conn, "SELECT * FROM barang INNER JOIN keadaan_bara
                       <tr>
                         <th>Nama Barang</th>
                         <th>Stok Barang</th>
-                        <th>Barang Rusak</th>
                         <th>Barang Baik</th>
+                        <th>Barang Rusak</th>
                         <th>Status Barang</th>
                       </tr>
                     </tfoot>
