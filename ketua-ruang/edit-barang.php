@@ -18,7 +18,6 @@ if (isset($_GET['edit'])) {
     $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
     $jumlah_baik = mysqli_escape_string($conn, $_POST['jumlah_baik']);
     $jumlah_rusak = mysqli_escape_string($conn, $_POST['jumlah_rusak']);
-    $spesifikasi = mysqli_escape_string($conn, $_POST['spesifikasi_barang']);
     if (empty($nama_barang) || empty($stok_barang) || empty($status_barang)) {
       echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
     } else {
@@ -132,7 +131,7 @@ if (isset($_GET['edit'])) {
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
                       <input type="number" name="stok_barang" class="form-control" id="stok_barang"
-                        placeholder="Stock Barang..." value="<?= $data_barang['stok_barang'] ?>">
+                        placeholder="Stock Barang..." value="<?= $data_barang['stok_barang'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
@@ -146,17 +145,12 @@ if (isset($_GET['edit'])) {
                     <div class="form-group">
                       <label for="jumlah_baik">Jumlah Baik</label>
                       <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik"
-                        placeholder="Jumlah Barang Baik" value="<?= $data_barang['jumlah_baik'] ?>">
+                        placeholder="Jumlah Barang Baik" value="<?= $data_barang['jumlah_baik'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="jumlah_rusak">Jumlah Rusak</label>
                       <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak"
-                        placeholder="Jumlah Barang Rusak" value="<?= $data_barang['jumlah_rusak'] ?>">
-                    </div>
-                    <div class="form-group">
-                      <label for="spesifikasi_barang">Spesifikasi Barang</label>
-                      <textarea class="form-control" name="spesifikasi_barang" id="spesifikasi_barang" rows="5"
-                        placeholder="Spesifikasi Barang..."><?= $data_barang['spesifikasi'] ?></textarea>
+                        placeholder="Jumlah Barang Rusak" value="<?= $data_barang['jumlah_rusak'] ?>" readonly>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">

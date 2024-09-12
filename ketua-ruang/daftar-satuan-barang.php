@@ -166,7 +166,7 @@ if (isset($_GET['hapus'])) {
                           <td><?= $barang['status_barang'] ?></td>
                           <td><?= (!empty($barang['spesifikasi'])) ? nl2br(htmlspecialchars($barang['spesifikasi'])) : '-' ?></td>
                           <td>
-                            <a href="edit-satuan-barang.php?edit=<?= $barang['kode_barang'] ?>" class="btn btn-sm btn-warning"><i
+                            <a href="edit-satuan-barang.php?edit=<?= urlencode($barang['kode_barang']) ?>" class="btn btn-sm btn-warning"><i
                                 class="fas fa-pencil-alt"></i></a>
                             <a href="?hapus=<?= $barang['kode_barang'] ?>"
                               onclick="return confirm('Anda Yakin Ingin Menghapus Data?')"

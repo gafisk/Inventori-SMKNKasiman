@@ -9,12 +9,14 @@ $id_pj = $_SESSION['id_pj'];
 $data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
 
 if (isset($_GET['edit'])) {
-  $id_barang = mysqli_escape_string($conn, $_GET['edit']);
+  // get id barang from query string
+  $id_barang = mysqli_escape_string($conn, rawurldecode($_GET['edit']));
   $data_barang = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM barang_details WHERE kode_barang = '$id_barang'"));
   if (isset($_POST['submit'])) {
     $id_ruangbarang = $data_pj['id_ruangbarang'];
     $nama_barang = mysqli_escape_string($conn, $_POST['nama_barang']);
     $harga_barang = mysqli_escape_string($conn, $_POST['harga']);
+    $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
     $spesifikasi = mysqli_escape_string($conn, $_POST['spesifikasi_barang']);
     if (empty($nama_barang) || empty($harga_barang)) {
       echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
@@ -121,7 +123,14 @@ if (isset($_GET['edit'])) {
                     <div class="form-group">
                       <label for="harga">Harga</label>
                       <input type="number" name="harga" class="form-control" id="harga"
-                        placeholder="Jumlah Barang Baik" value="<?= $data_barang['harga'] ?>">
+                        placeholder="Harga Barang" value="<?= $data_barang['harga'] ?>">
+                    </div>
+                    <div class="form-group">
+                      <label>Status Barang</label>
+                      <select class="form-control" name="status_barang">
+                        <option <?= ($data_barang['status_barang'] == 'Baik') ? 'selected' : '' ?> value="Baik">Barang Baik</option>
+                        <option <?= ($data_barang['status_barang'] == 'Rusak') ? 'selected' : '' ?> value="Rusak">Barang Rusak</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label for="spesifikasi_barang">Spesifikasi Barang</label>
