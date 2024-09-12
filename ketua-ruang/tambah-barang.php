@@ -15,6 +15,7 @@ if (isset($_POST['submit'])) {
     'nama_barang' => $_POST['nama_barang'],
     'stok_barang' => $_POST['stok_barang'],
     'status_barang' => $_POST['status_barang'],
+    'spesifikasi' => $_POST['spesifikasi_barang'],
   ];
 
   if (!input_check($data1)) {
@@ -137,6 +138,11 @@ if (isset($_POST['submit'])) {
                         <option value="Tetap">Barang Tetap</option>
                         <option value="Pakai">Barang Habis Pakai</option>
                       </select>
+                      <div class="form-group">
+                        <label for="spesifikasi_barang">Spesifikasi Barang</label>
+                        <textarea class="form-control" name="spesifikasi_barang" id="spesifikasi_barang" rows="5"
+                          placeholder="Spesifikasi Barang..."></textarea>
+                      </div>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
@@ -162,16 +168,16 @@ if (isset($_POST['submit'])) {
   <?php include('layouts/footer.php') ?>
 </body>
 <script>
-document.querySelector('form').addEventListener('submit', function(event) {
-  var stokBarang = parseInt(document.getElementById('stok_barang').value);
-  var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
-  var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
+  document.querySelector('form').addEventListener('submit', function(event) {
+    var stokBarang = parseInt(document.getElementById('stok_barang').value);
+    var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
+    var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
 
-  if (jumlahBaik + jumlahRusak != stokBarang) {
-    event.preventDefault(); // Mencegah pengiriman form
-    alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
-  }
-});
+    if (jumlahBaik + jumlahRusak != stokBarang) {
+      event.preventDefault(); // Mencegah pengiriman form
+      alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
+    }
+  });
 </script>
 
 </html>

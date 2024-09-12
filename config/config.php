@@ -105,5 +105,5 @@ function input_check($data)
 function add_log($id_admin, $id_pj, $keterangan)
 {
   global $conn;
-  $query = mysqli_query($conn, "INSERT INTO `log` (id_admin, id_pj, waktu, keterangan) VALUES ('$id_admin', $id_pj, NOW(), '$keterangan')");
+  $query = mysqli_query($conn, "INSERT INTO `log` (id_admin, id_pj, waktu, keterangan) VALUES ($id_admin, $id_pj, NOW(), '$keterangan')");
 }
