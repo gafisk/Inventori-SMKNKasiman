@@ -21,7 +21,7 @@ if (isset($_GET['edit'])) {
     if (empty($nama_barang) || empty($stok_barang) || empty($status_barang)) {
       echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
     } else {
-      $query = mysqli_query($conn, "UPDATE barang SET nama_barang = '$nama_barang', stok_barang = '$stok_barang', status_barang = '$status_barang' WHERE id_barang = '$id_barang'");
+      $query = mysqli_query($conn, "UPDATE barang SET nama_barang = '$nama_barang', stok_barang = '$stok_barang', status_barang = '$status_barang', spesifikasi = '$spesifikasi' WHERE id_barang = '$id_barang'");
       if ($query) {
         $update_keadaan = mysqli_query($conn, "UPDATE keadaan_barang SET jumlah_baik = '$jumlah_baik', jumlah_rusak = '$jumlah_rusak' WHERE id_barang = '$id_barang'");
         if ($update_keadaan) {
@@ -131,7 +131,7 @@ if (isset($_GET['edit'])) {
                     <div class="form-group">
                       <label for="stok_barang">Stok Barang</label>
                       <input type="number" name="stok_barang" class="form-control" id="stok_barang"
-                        placeholder="Stock Barang..." value="<?= $data_barang['stok_barang'] ?>">
+                        placeholder="Stock Barang..." value="<?= $data_barang['stok_barang'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
@@ -145,12 +145,12 @@ if (isset($_GET['edit'])) {
                     <div class="form-group">
                       <label for="jumlah_baik">Jumlah Baik</label>
                       <input type="number" name="jumlah_baik" class="form-control" id="jumlah_baik"
-                        placeholder="Jumlah Barang Baik" value="<?= $data_barang['jumlah_baik'] ?>">
+                        placeholder="Jumlah Barang Baik" value="<?= $data_barang['jumlah_baik'] ?>" readonly>
                     </div>
                     <div class="form-group">
                       <label for="jumlah_rusak">Jumlah Rusak</label>
                       <input type="number" name="jumlah_rusak" class="form-control" id="jumlah_rusak"
-                        placeholder="Jumlah Barang Rusak" value="<?= $data_barang['jumlah_rusak'] ?>">
+                        placeholder="Jumlah Barang Rusak" value="<?= $data_barang['jumlah_rusak'] ?>" readonly>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
@@ -177,16 +177,16 @@ if (isset($_GET['edit'])) {
 </body>
 
 <script>
-document.querySelector('form').addEventListener('submit', function(event) {
-  var stokBarang = parseInt(document.getElementById('stok_barang').value);
-  var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
-  var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
+  document.querySelector('form').addEventListener('submit', function(event) {
+    var stokBarang = parseInt(document.getElementById('stok_barang').value);
+    var jumlahBaik = parseInt(document.getElementById('jumlah_baik').value);
+    var jumlahRusak = parseInt(document.getElementById('jumlah_rusak').value);
 
-  if (jumlahBaik + jumlahRusak != stokBarang) {
-    event.preventDefault(); // Mencegah pengiriman form
-    alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
-  }
-});
+    if (jumlahBaik + jumlahRusak != stokBarang) {
+      event.preventDefault(); // Mencegah pengiriman form
+      alert('Jumlah barang baik dan rusak harus sama dengan stock barang.');
+    }
+  });
 </script>
 
 </html>

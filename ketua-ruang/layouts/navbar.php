@@ -19,9 +19,21 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
+                    <a href="tambah-satuan-barang.php" class="nav-link">
+                      <i class="fas fa-plus nav-icon"></i>
+                      <p>Tambah Satuan Barang</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="tambah-barang.php" class="nav-link">
                       <i class="fas fa-plus nav-icon"></i>
                       <p>Tambah Barang</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="daftar-satuan-barang.php" class="nav-link">
+                      <i class="fas fa-box nav-icon"></i>
+                      <p>Daftar Satuan Barang</p>
                     </a>
                   </li>
                   <li class="nav-item">

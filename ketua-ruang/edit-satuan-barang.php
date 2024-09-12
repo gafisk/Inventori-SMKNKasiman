@@ -8,36 +8,33 @@ if (!isset($_SESSION['id_pj']) || empty($_SESSION['id_pj'])) {
 $id_pj = $_SESSION['id_pj'];
 $data_pj = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pj_ruang INNER JOIN ruang_barang using(id_ruangbarang) WHERE id_pj = '$id_pj'"));
 
-if (isset($_POST['submit'])) {
-  $id_ruangbarang = $data_pj['id_ruangbarang'];
-  $stok = 0;
-  $data1 = [
-    'id_ruangbarang' => $id_ruangbarang,
-    'nama_barang' => $_POST['nama_barang'],
-    'kode_barang' => $_POST['kode_barang'],
-    'status_barang' => $_POST['status_barang'],
-  ];
-  if (!input_check($data1)) {
-    echo "<script>alert('Semua kolom inputan tidak boleh kosong atau berisi spasi saja!');</script>";
-  } else {
-    $data1 = [
-      'id_ruangbarang' => $id_ruangbarang,
-      'nama_barang' => $_POST['nama_barang'],
-      'kode_barang' => $_POST['kode_barang'],
-      'stok_barang' => $stok,
-      'status_barang' => $_POST['status_barang'],
-    ];
-    insert('barang', $data1);
-    $id_barang = mysqli_insert_id($conn);
-    $data2 = [
-      'id_barang' => $id_barang,
-      'jumlah_baik' => 0,
-      'jumlah_rusak' => 0,
-    ];
-    insert('keadaan_barang', $data2);
-    add_log('NULL', $_SESSION['id_pj'], "Menambahkan Barang " . $_POST['nama_barang']);
-    header('location:daftar-barang.php');
-    exit();
+if (isset($_GET['edit'])) {
+  // get id barang from query string
+  $id_barang = mysqli_escape_string($conn, rawurldecode($_GET['edit']));
+  $data_barang = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM barang_details WHERE kode_barang = '$id_barang'"));
+  if (isset($_POST['submit'])) {
+    $id_ruangbarang = $data_pj['id_ruangbarang'];
+    $nama_barang = mysqli_escape_string($conn, $_POST['nama_barang']);
+    $harga_barang = mysqli_escape_string($conn, $_POST['harga']);
+    $status_barang = mysqli_escape_string($conn, $_POST['status_barang']);
+    $spesifikasi = mysqli_escape_string($conn, $_POST['spesifikasi_barang']);
+    if (empty($nama_barang) || empty($harga_barang)) {
+      echo "<script>alert('Kolom Inputan Data Barang Tidak Boleh Kosong!');</script>";
+    } else {
+      $query = mysqli_query($conn, "UPDATE barang_details SET nama = '$nama_barang', harga = '$harga_barang', spesifikasi = '$spesifikasi' WHERE kode_barang = '$id_barang'");
+      if ($query) {
+        $_SESSION['sukses'] = true;
+        $_SESSION['msg'] = "Data Berhasil Diperbaharui";
+        add_log('NULL', $_SESSION['id_pj'], "Mengedit Barang " . $id_barang);
+        header('location:daftar-satuan-barang.php');
+        exit();
+      } else {
+        $_SESSION['gagal'] = true;
+        $_SESSION['msg'] = "Data Gagal Diperbaharui";
+        header('location:daftar-satuan-barang.php');
+        exit();
+      }
+    }
   }
 }
 
@@ -88,7 +85,7 @@ if (isset($_POST['submit'])) {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Tambah Barang</h1>
+              <h1 class="m-0">Edit Data Barang</h1>
             </div>
             <!-- /.col -->
           </div>
@@ -121,19 +118,24 @@ if (isset($_POST['submit'])) {
                     <div class="form-group">
                       <label for="nama_barang">Nama Barang</label>
                       <input type="text" name="nama_barang" class="form-control" id="nama_barang"
-                        placeholder="Nama Barang...">
+                        placeholder="Nama Barang..." value="<?= $data_barang['nama'] ?>">
                     </div>
                     <div class="form-group">
-                      <label for="kode_barang">Kode Barang</label>
-                      <input type="text" name="kode_barang" class="form-control" id="kode_barang"
-                        placeholder="Kode Barang example 'BRG'">
+                      <label for="harga">Harga</label>
+                      <input type="number" name="harga" class="form-control" id="harga"
+                        placeholder="Harga Barang" value="<?= $data_barang['harga'] ?>">
                     </div>
                     <div class="form-group">
                       <label>Status Barang</label>
                       <select class="form-control" name="status_barang">
-                        <option value="Tetap">Barang Tetap</option>
-                        <option value="Pakai">Barang Habis Pakai</option>
+                        <option <?= ($data_barang['status_barang'] == 'Baik') ? 'selected' : '' ?> value="Baik">Barang Baik</option>
+                        <option <?= ($data_barang['status_barang'] == 'Rusak') ? 'selected' : '' ?> value="Rusak">Barang Rusak</option>
                       </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="spesifikasi_barang">Spesifikasi Barang</label>
+                      <textarea class="form-control" name="spesifikasi_barang" id="spesifikasi_barang" rows="5"
+                        placeholder="Spesifikasi Barang..."><?= $data_barang['spesifikasi'] ?></textarea>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
@@ -158,6 +160,7 @@ if (isset($_POST['submit'])) {
   <!-- /.content-wrapper -->
   <?php include('layouts/footer.php') ?>
 </body>
+
 <script>
   document.querySelector('form').addEventListener('submit', function(event) {
     var stokBarang = parseInt(document.getElementById('stok_barang').value);

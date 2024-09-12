@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['id_pj'] = $row['id_pj'];
         $_SESSION['nama_pj'] = $row['nama_pj'];
         $_SESSION['id_ruangbarang'] = $row['id_ruangbarang'];
-        add_log('NULL', $_SESSION['id_pj'], "Ketua Ruang Login");
+        add_log('NULL', $row['id_pj'], "Ketua Ruang Login");
         echo '<script>alert("Anda Berhasil Login. Redirecting..."); window.location.href="ketua-ruang/";</script>';
         exit();
       } else {

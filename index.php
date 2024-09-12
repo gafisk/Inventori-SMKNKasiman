@@ -1,8 +1,8 @@
 <?php
 include('config/config.php');
 if (isset($_POST['submit'])) {
-    $id = mysqli_escape_string($conn, $_POST['identitas']);
-    $datas = mysqli_query($conn, "SELECT COALESCE(pengembalian.tanggal_kembali, '-') AS tanggal_serah, 
+  $id = mysqli_escape_string($conn, $_POST['identitas']);
+  $datas = mysqli_query($conn, "SELECT COALESCE(pengembalian.tanggal_kembali, '-') AS tanggal_serah, 
        peminjaman.*, 
        users.*, 
        pj_ruang.*, 
@@ -15,6 +15,49 @@ INNER JOIN barang ON peminjaman.id_barang = barang.id_barang
 INNER JOIN ruang_barang ON pj_ruang.id_ruangbarang = ruang_barang.id_ruangbarang
 LEFT JOIN pengembalian ON peminjaman.id_peminjaman = pengembalian.id_peminjaman
 WHERE users.ni_user = '$id'");
+}
+
+
+// Live Search Features
+if (isset($_POST['query'])) {
+  $search = mysqli_real_escape_string($conn, $_POST['query']);
+
+  // Query untuk mengambil hasil pencarian
+  $result = mysqli_query($conn, "SELECT barang.nama_barang, barang.stok_barang, ruang_barang.role_ruang, ruang_barang.nama_ruangbarang 
+          FROM barang 
+          INNER JOIN ruang_barang ON barang.id_ruangbarang = ruang_barang.id_ruangbarang 
+          WHERE barang.nama_barang LIKE '%$search%'");
+
+  // Mulai tabel HTML
+  $output = '<table class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>Nama Barang</th>
+                      <th>Sisa Barang</th>
+                      <th>Lokasi Barang</th>
+                  </tr>
+              </thead>
+              <tbody>';
+
+  if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $output .= '<tr>
+                          <td>' . $row['nama_barang'] . '</td>
+                          <td>' . $row['stok_barang'] . '</td>
+                          <td>' . $row['role_ruang'] . " " . $row['nama_ruangbarang'] . '</td>
+                      </tr>';
+    }
+  } else {
+    $output .= '<tr>
+                      <td colspan="4" class="text-center">No results found</td>
+                  </tr>';
+  }
+
+  // Menutup tag tabel
+  $output .= '</tbody></table>';
+
+  echo $output;
+  exit();
 }
 ?>
 
@@ -42,6 +85,7 @@ WHERE users.ni_user = '$id'");
 
   <!-- Customized Bootstrap Stylesheet -->
   <link href="assets_index/css/style.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -54,8 +98,16 @@ WHERE users.ni_user = '$id'");
       <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse justify-content-between px-lg-6" id="navbarCollapse">
-        <div class="navbar-nav m-auto py-0">
+      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <!-- Form in Navbar -->
+        <form method="POST" action="" class="form-inline my-2 my-lg-0">
+          <div class="input-group" style=" width: 700px;padding: 10px;">
+            <input type="text" id="search" name="items" class="form-control border-light" style="padding: 10px;" placeholder="Cek Ketersediaan Barang">
+          </div>
+          <div id="result"></div>
+        </form>
+        <!-- Navbar links -->
+        <div class="navbar-nav ml-auto py-0">
           <a href="#" class="nav-item nav-link active">Home</a>
           <a href="#peminjaman" class="nav-item nav-link">Cek Peminjaman</a>
           <a href="#footer" class="nav-item nav-link">Contact</a>
@@ -110,25 +162,25 @@ WHERE users.ni_user = '$id'");
             </thead>
             <tbody>
               <?php if (empty($datas)) : ?>
-              <tr>
-                <td colspan="9">Data tidak ada</td>
-              </tr>
+                <tr>
+                  <td colspan="9">Data tidak ada</td>
+                </tr>
               <?php else : ?>
-              <?php $no = 1; ?>
-              <?php foreach ($datas as $data) : ?>
-              <tr>
-                <th scope="row"><?= $no ?></th>
-                <td><?= $data['ni_user'] ?></td>
-                <td><?= $data['nama_user'] ?></td>
-                <td><?= $data['nama_barang'] ?></td>
-                <td><?= $data['nama_ruangbarang'] ?></td>
-                <td><?= $data['tanggal_pinjam'] ?></td>
-                <td><?= $data['tanggal_kembali'] ?></td>
-                <td><?= $data['tanggal_serah'] ?></td>
-                <td><?= $data['status_peminjaman'] ?></td>
-              </tr>
-              <?php $no += 1; ?>
-              <?php endforeach; ?>
+                <?php $no = 1; ?>
+                <?php foreach ($datas as $data) : ?>
+                  <tr>
+                    <th scope="row"><?= $no ?></th>
+                    <td><?= $data['ni_user'] ?></td>
+                    <td><?= $data['nama_user'] ?></td>
+                    <td><?= $data['nama_barang'] ?></td>
+                    <td><?= $data['nama_ruangbarang'] ?></td>
+                    <td><?= $data['tanggal_pinjam'] ?></td>
+                    <td><?= $data['tanggal_kembali'] ?></td>
+                    <td><?= $data['tanggal_serah'] ?></td>
+                    <td><?= $data['status_peminjaman'] ?></td>
+                  </tr>
+                  <?php $no += 1; ?>
+                <?php endforeach; ?>
               <?php endif; ?>
             </tbody>
           </table>
@@ -199,6 +251,9 @@ WHERE users.ni_user = '$id'");
   <script src="assets_index/lib/waypoints/waypoints.min.js"></script>
   <script src="assets_index/lib/counterup/counterup.min.js"></script>
   <script src="assets_index/lib/owlcarousel/owl.carousel.min.js"></script>
+
+  <!-- Livesearch Library -->
+  <script src="assets_index/js/livesearch.js"></script>
 
   <!-- Contact Javascript File -->
   <script src="assets_index/mail/jqBootstrapValidation.min.js"></script>
